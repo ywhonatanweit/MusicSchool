@@ -37,7 +37,7 @@ namespace MusicSchoolWpf
             songs = await apiService.SelectAllSongs();
             foreach (song s in songs)
             {
-                SongUC suc = new SongUC(s);
+                SongCardUC suc = new SongCardUC(s);
                 
                 songswrapList.Children.Add(suc);
             }

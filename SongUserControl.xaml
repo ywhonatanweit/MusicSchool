@@ -14,10 +14,13 @@
             <RowDefinition Height="6*"/>
             <RowDefinition Height="49*"/>
         </Grid.RowDefinitions>
-        <TextBlock Name="namebox" FontSize="50" Grid.Row="0"/>
-        <TextBlock x:Name="artistbox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Left" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold" />
-        <TextBlock x:Name="genrebox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Center" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold"/>
-        <TextBlock x:Name="diffbox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Right" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Bottom" AllowDrop="False" >
+            <TextBlock x:Name="artistbox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Left" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold" Margin="0,0,40,0"/>
+            <TextBlock x:Name="genrebox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Center" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold" Margin="0,0,40,0"/>
+            <TextBlock x:Name="diffbox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Right" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold" Margin="0,0,40,0"/>
+            <TextBlock x:Name="lanbox"  FontSize="20" Grid.Row="1" HorizontalAlignment="Right" Background="DarkRed"  Width="100" TextAlignment="Center" FontWeight="Bold" Margin="0,0,40,0"/>
+        </StackPanel>
+        <TextBlock Name="namebox" FontSize="50" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="DarkRed"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,27,-10,10" Grid.RowSpan="2">
          
             <WrapPanel Margin="10,10,10,10" x:Name="songData" />
