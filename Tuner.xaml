@@ -214,31 +214,32 @@
       Title="Tuner">
 
     <Grid Background="#1E1E1E">
-
-        <!-- תצוגת תדר -->
-        <TextBlock x:Name="FrequencyText"
-                   Text="110 Hz"
+ <!--תדירות-->
+        <TextBlock x:Name="frequency"
+                   Text="frequency"
                    FontSize="36"
                    Foreground="White"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
 
-        <!-- בר כיוון -->
         <Grid Margin="40,100,40,0"
-              Height="30"
-              VerticalAlignment="Top">
+      Height="30"
+      VerticalAlignment="Top">
 
             <Border Background="DarkRed"
-                    CornerRadius="15"/>
+            CornerRadius="15"/>
 
-            <Border Width="80"
-                    Background="LimeGreen"
-                    HorizontalAlignment="Center"
-                    CornerRadius="10"/>
+            <Border x:Name="GoodRange"
+            Width="80"
+            Background="LimeGreen"
+            HorizontalAlignment="Center"
+            CornerRadius="10"/>
 
-            <Rectangle Width="4"
-                       Fill="White"
-                       HorizontalAlignment="Center"/>
+         
+            <Rectangle x:Name="FrequencyLine"
+               Width="4"
+               Fill="White"
+               HorizontalAlignment="Center"/>
         </Grid>
 
         <!-- כפתור החלפה חשמלית/אקוסטית -->
@@ -269,18 +270,18 @@
                      Fill="#3A3A3A"/>
 
             <!-- 6 מפתחות בצד ימין -->
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="210" Canvas.Top="20"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="220" Canvas.Top="60"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="225" Canvas.Top="100"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="225" Canvas.Top="140"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="220" Canvas.Top="180"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="210" Canvas.Top="220"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="210" Canvas.Top="20" Click="he"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="220" Canvas.Top="60" Click="b"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="225" Canvas.Top="100" Click="g"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="225" Canvas.Top="140" Click="d"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="220" Canvas.Top="180" Click="a"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="210" Canvas.Top="220" Click="le"/>
         </Canvas>
 
         <!-- ================= ELECTRIC LEFT ================= -->
@@ -294,18 +295,18 @@
                      Fill="#3A3A3A"/>
 
             <!-- 6 מפתחות בצד שמאל -->
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="60" Canvas.Top="20"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="50" Canvas.Top="60"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="45" Canvas.Top="100"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="45" Canvas.Top="140"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="50" Canvas.Top="180"/>
-            <Ellipse Width="25" Height="25" Fill="Silver"
-                     Canvas.Left="60" Canvas.Top="220"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="20" Click="he"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="50" Canvas.Top="60" Click="b"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="45" Canvas.Top="100" Click="g"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="45" Canvas.Top="140" Click="d"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="50" Canvas.Top="180" Click="a"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="220" Click="le"/>
         </Canvas>
 
         <!-- ================= ACOUSTIC RIGHT ================= -->
@@ -320,20 +321,20 @@
                        Fill="#8B5A2B"
                        Canvas.Left="90"/>
 
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="60" Canvas.Top="20"/>
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="215" Canvas.Top="20"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="20" Click="d"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="215" Canvas.Top="20" Click="g"/>
 
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="60" Canvas.Top="90"/>
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="215" Canvas.Top="90"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="90" Click="a"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="215" Canvas.Top="90" Click="b"/>
 
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="60" Canvas.Top="160"/>
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="215" Canvas.Top="160"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="160" Click="le"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="215" Canvas.Top="160" Click="he"/>
         </Canvas>
 
         <!-- ================= ACOUSTIC LEFT ================= -->
@@ -348,20 +349,20 @@
                        Fill="#8B5A2B"
                        Canvas.Left="90"/>
 
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="215" Canvas.Top="20"/>
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="60" Canvas.Top="20"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="215" Canvas.Top="20" Click="d"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="20" Click="g"/>
 
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="215" Canvas.Top="90"/>
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="60" Canvas.Top="90"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="215" Canvas.Top="90" Click="a"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="90" Click="b"/>
 
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="215" Canvas.Top="160"/>
-            <Ellipse Width="25" Height="25" Fill="Goldenrod"
-                     Canvas.Left="60" Canvas.Top="160"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="215" Canvas.Top="160" Click="le"/>
+            <Button Width="25" Height="25"   Style="{StaticResource MaterialDesignFloatingActionButton}"
+                     Canvas.Left="60" Canvas.Top="160" Click="he"/>
         </Canvas>
 
     </Grid>
