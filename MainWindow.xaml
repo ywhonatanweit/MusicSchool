@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Frame Source="HomePage.xaml"/>
-        
+        <!--<Frame Source="AllMySongsPage.xaml"/>-->
+
+        <Frame Source="LoginPage.xaml"/>
     </Grid>
 </Window>

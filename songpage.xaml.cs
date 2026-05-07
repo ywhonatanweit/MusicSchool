@@ -1,4 +1,5 @@
 ﻿using Model;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,29 @@ namespace MusicSchoolWpf
     /// </summary>
     public partial class songpage : Page
     {
+
+        ApiService api=new ApiService();
+        SongList songlist = new SongList();
         public songpage()
         {
             InitializeComponent();
+
+            GetAllSongs();
+
+        }
+
+
+
+        public async void GetAllSongs()
+        {
+            SongCardUC song;
+            songlist =await api.SelectAllSongs();
+
+            foreach (song s in songlist)
+            {
+                song = new SongCardUC(s);
+                sp.Children.Add(song);
+            }
         }
         public songpage(song s)
         {

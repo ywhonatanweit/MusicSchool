@@ -38,11 +38,11 @@ namespace MusicSchoolWpf
         {
             string name = loginusername.Text;
             string pass = loginpassword.Password;
-            MessageBox.Show(plist[0].Name + " " + plist[0].Code);
+            //MessageBox.Show(plist[0].Name + " " + plist[0].Code);
             person user = plist.Find(x => x.Name == name && x.Code == pass);
             if (user != null)
             {
-                this.NavigationService.Navigate(new Page1());
+                this.NavigationService.Navigate(new HomePage2(name));
             }
 
         }
@@ -63,7 +63,7 @@ namespace MusicSchoolWpf
 
 
 
-            this.NavigationService.Navigate(new Page2());
+            //this.NavigationService.Navigate(new HomePage2(name));
 
         }
 

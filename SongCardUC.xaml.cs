@@ -31,8 +31,15 @@ namespace MusicSchoolWpf
 
             name.Text = s.Name;
             artist.Text = s.Artistid.Name;
+            lan.Text = s.Languageid.Languagename;
+            genre.Text = s.Gaenreid.Genrename;
+            diff.Value = s.Difficultyid.Id;
 
+        }
 
+        private void Show(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

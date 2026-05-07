@@ -190,7 +190,7 @@ namespace MusicSchoolWpf
             waveIn.WaveFormat = new WaveFormat(44100, 1);
             waveIn.DataAvailable += OnDataAvailable;
             waveIn.StartRecording();
-            frequency.Text = float.Parse(DetectFrequency);
+            //frequency.Text = float.Parse(DetectFrequency);
         }
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)

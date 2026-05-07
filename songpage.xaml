@@ -1,14 +1,37 @@
 ﻿<Page x:Class="MusicSchoolWpf.songpage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MusicSchoolWpf"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="songpage">
+      Title="songpage" Background="Black">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
 
-    <StackPanel x:Name="sp"/>
 
-   
+        </Grid.RowDefinitions>
+        <TextBlock Text="songs" FontSize="80" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="DarkRed"/>
+        <ComboBox Grid.Row="1" HorizontalAlignment="Left" SelectedIndex="0" FontSize="20"  HorizontalContentAlignment="Center"
+          VerticalContentAlignment="Center"
+                      Width="180"
+                      Height="40"
+                      Background="White"
+                      Foreground="Black"
+                      BorderBrush="#333">
+            <ComboBoxItem Content="מיין לפי" IsEnabled="False"/>
+            <ComboBoxItem Content="ברירת מחדל"/>
+            <ComboBoxItem Content="א-ב"/>
+            <ComboBoxItem Content="קל לקשה"/>
+            <ComboBoxItem Content="קשה לקל"/>
+        </ComboBox>
+        <StackPanel x:Name="sp" Grid.Row="2"/>
+        <TextBlock Text="SEARCH" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="60" Foreground="DarkRed" />
+        <TextBlock Text="סנן לפי" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="DarkRed" FontSize="30"/>
+    </Grid>
 </Page>
