@@ -62,8 +62,17 @@ namespace MusicSchoolWpf
         private void UpdateTimerInterval()
         {
             if (bpm > 0)
-                metronomeTimer.Interval = TimeSpan.FromMilliseconds(60000.0 / bpm);
-
+            {
+                double intervalMs = bpm/60000.0 ;
+                metronomeTimer.Interval = TimeSpan.FromMilliseconds(intervalMs);
+            }
+            else
+            {
+                // אם ה-BPM לא תקין, עוצרים את הטיימר כדי למנוע קריסה
+                metronomeTimer.Stop();
+                isPlaying = false;
+                UpdatePlayIcon(false);
+            }
         }
 
         private void BpmSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -211,5 +220,6 @@ namespace MusicSchoolWpf
             }
             return null;
         }
+
     }
 }

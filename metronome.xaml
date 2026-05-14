@@ -68,7 +68,7 @@
 
         <!-- StackPanel עבור BPM עם טקסט -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,120,0,0" >
-            <TextBox x:Name="BpmTextBox" Text="0" Foreground="DarkRed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="40" FontSize="20" TextAlignment="Center" />
+            <TextBox x:Name="BpmTextBox" Text="5" Foreground="DarkRed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="40" FontSize="20" TextAlignment="Center" />
             <TextBlock Foreground="DarkRed" Text="bpm" FontSize="20" HorizontalAlignment="Center" />
         </StackPanel>
 
@@ -85,7 +85,7 @@
          ValueChanged="BpmSlider_ValueChanged"/>
 
 
-        <Button Margin="0,300,0,0" Click="playbpm" Background="DarkRed" 
+        <Button Margin="0,300,0,0" Click="playbpm" Background="DarkRed" x:Name="PlayPauseIcon"
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 Style="{StaticResource MaterialDesignIconButton}"
                 ToolTip="Play">

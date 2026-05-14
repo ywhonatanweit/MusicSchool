@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace MusicSchoolWpf
 {
@@ -98,6 +99,9 @@ namespace MusicSchoolWpf
             signupusername.Clear();
             loginpassword.Clear();
             loginusername.Clear();
+
+            this.NavigationService.Navigate(new HomePage2(name));
+
         }
         private async void InsertPerson(person p)
         {
@@ -108,6 +112,13 @@ namespace MusicSchoolWpf
            
             }
 
+
+        }
+
+        private void Admin(object sender, RoutedEventArgs e)
+        {
+            string name = "admin";
+            this.NavigationService.Navigate(new HomePage2(name));
 
         }
     }

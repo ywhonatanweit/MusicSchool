@@ -21,6 +21,7 @@ namespace MusicSchoolWpf
     /// </summary>
     public partial class SongCardUC : UserControl
     {
+        private song sng;
         public SongCardUC()
         {
             InitializeComponent();
@@ -29,6 +30,7 @@ namespace MusicSchoolWpf
         {
             InitializeComponent();
 
+            sng = s;
             name.Text = s.Name;
             artist.Text = s.Artistid.Name;
             lan.Text = s.Languageid.Languagename;
@@ -39,7 +41,10 @@ namespace MusicSchoolWpf
 
         private void Show(object sender, RoutedEventArgs e)
         {
-            
+            // ניווט לעמוד השיר (משתמשים ב-NavigationService של העמוד שמכיל את הכרטיסייה)
+            //var parentPage = Window.GetWindow(this).FindName("MainFrame") as Frame;
+            // הערה: אם אתה משתמש בפריימים לניווט, נשתמש בזה:
+            NavigationService.GetNavigationService(this)?.Navigate(new songpage(sng));
         }
     }
 }

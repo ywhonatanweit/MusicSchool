@@ -11,20 +11,43 @@
     <!--Firebrick-->
     <!--Background="#26282a">-->
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Image x:Name="pic"/>
-        <TextBlock Text="name" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="name"/>
-        <TextBlock Text="artist" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="artist"/>
-        <TextBlock Text="language" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" x:Name="lan"/>
-        <TextBlock Text="genre" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="genre"/>
-        <materialDesign:RatingBar IsReadOnly="True" Value="4" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-         x:Name="diff" materialDesign:ColorZoneAssist.Foreground="DarkRed"  />
-        <Button Content="הצג מילים" Click="Show" Grid.Row="3" Width="100" Background="DarkGray"/>
-    </Grid>
+    <Border Background="#121212" CornerRadius="10" BorderBrush="DarkRed" BorderThickness="1" Margin="5">
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <!-- לתמונה -->
+                <ColumnDefinition Width="*"/>
+                <!-- לפרטים -->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- תמונה -->
+            <!--<Image x:Name="pic" Grid.RowSpan="3" Source="pack://application:,,,/Resources/music_placeholder.png" Margin="5"/>-->
+
+            <!-- שם השיר והדירוג -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBlock x:Name="name" Text="שם השיר" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                <materialDesign:RatingBar x:Name="diff" Value="3" Margin="10,0" IsReadOnly="True" 
+                                          Foreground="DarkRed" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- פרטי אמן וסגנון -->
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock x:Name="artist" Text="שם האמן" FontSize="16" Foreground="#AAA"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock x:Name="genre" Text="סגנון" Foreground="DarkRed" Margin="0,0,15,0"/>
+                    <TextBlock x:Name="lan" Text="שפה" Foreground="#888"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- כפתור הצגת מילים -->
+            <Button Content="הצג מילים" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
+                    Background="DarkRed" Foreground="White" BorderBrush="Transparent"
+                    Click="Show" Height="30" Width="100"/>
+        </Grid>
+    </Border>
 </UserControl>

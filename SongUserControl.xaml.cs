@@ -36,6 +36,27 @@ namespace MusicSchoolWpf
             LyricsList ly = await apiService.SelectAllLyrics();
             List < lyrics > currentLy = (List<lyrics>)ly.FindAll(x => x.Songid.Id == s.Id) ;
             currentLy.OrderBy(x => x.Placment).ToList();
+
+             currentLy = ly.Where(x => x.Songid.Id == s.Id).OrderBy(x => x.Placment).ToList();
+
+            // המיון לא בטוח טוב אולי כדאי להשאיר רק את השורה האחרונה וליצור בה את קארנטלי בתור ואר
+
+            //נתונים:
+
+
+
+            diffRating.Value = s.Difficultyid.Id;
+            genrebox.Text = ("genre " + s.Gaenreid.Genrename);
+            artistbox.Text = ("artist " + s.Artistid.Name);
+            namebox.Text = s.Name;
+            lanbox.Text = s.Languageid.Languagename;
+
+            // כאן תוכל להוסיף טעינת תמונה אם יש לך נתיב ב-s.Pic
+            // if (!string.IsNullOrEmpty(s.Pic)) imgSong.Source = new BitmapImage(new Uri(s.Pic));
+
+
+            songData.Children.Clear();
+
             foreach (lyrics lyr in currentLy)
             {
                 StackPanel lyPanel = new StackPanel();
@@ -46,10 +67,6 @@ namespace MusicSchoolWpf
                 lyPanel.Children.Add( chordText );
                 lyPanel.Children.Add( lyText );
                 songData.Children.Add ( lyPanel );
-                diffbox.Text = ("difficulty "+ s.Difficultyid);
-                genrebox.Text = ("genre "+ s.Difficultyid);
-                artistbox.Text = ("artist " + s.Artistid);
-                namebox.Text = s.Name;
 
 
             }
