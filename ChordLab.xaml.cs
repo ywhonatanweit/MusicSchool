@@ -25,6 +25,7 @@ namespace MusicSchoolWpf
         {
             InitializeComponent();
             LoadData();
+            
         }
 
         private async void LoadData()
@@ -61,8 +62,8 @@ namespace MusicSchoolWpf
             filtered = cmbSort.SelectedIndex switch
             {
                 1 => filtered.OrderBy(c => c.Name),
-                2 => filtered.OrderBy(c => c.Difficulty),
-                3 => filtered.OrderByDescending(c => c.Difficulty),
+                2 => filtered.OrderBy(c => c.Difficulty.ToString()),
+                3 => filtered.OrderByDescending(c => c.Difficulty.ToString()),
                 _ => filtered
             };
 
@@ -72,6 +73,7 @@ namespace MusicSchoolWpf
         private void UpdateView(IEnumerable<chord> chords)
         {
             wpChords.Children.Clear();
+            //wpChords = new WrapPanel();
             foreach (var c in chords)
             {
                 wpChords.Children.Add(new ChordCardUC(c));

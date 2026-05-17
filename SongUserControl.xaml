@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800" Background="Black">
     <Grid Margin="25">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*"/>
             <!-- כותרת ותמונה -->
             <RowDefinition Height="Auto"/>
             <!-- שורת אייקונים ונתונים -->
@@ -19,26 +19,38 @@
         </Grid.RowDefinitions>
 
         <!-- חלק עליון: תמונה ושם השיר -->
+        <!-- חלק עליון: שם השיר (שמאל) ותמונה (ימין) -->
         <Grid Grid.Row="0" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Name="namebox" Text="שם השיר" FontSize="60" FontWeight="Bold" Foreground="DarkRed">
+            <!-- שם השיר - מיושר לימין בתוך העמודה השמאלית כדי שיהיה קרוב לתמונה -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,30,0">
+                <TextBlock Name="namebox" Text="שם השיר" FontSize="55" FontWeight="Bold" Foreground="DarkRed" TextAlignment="Right">
                     <TextBlock.Effect>
                         <DropShadowEffect BlurRadius="10" Color="Black" ShadowDepth="2"/>
                     </TextBlock.Effect>
                 </TextBlock>
             </StackPanel>
 
-            <Border Grid.Column="1" Width="180" Height="180" CornerRadius="20" BorderBrush="DarkRed" BorderThickness="2" VerticalAlignment="Top">
-                <Border.Clip>
-                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,180,180"/>
-                </Border.Clip>
-                <!--<Image x:Name="imgSong" Stretch="UniformToFill" Source="pack://application:,,,/Resources/placeholder.jpg"/>-->
+            <!-- התמונה בצד ימין -->
+            <Border Grid.Column="1" Width="180" Height="180" CornerRadius="20" 
+                    BorderBrush="DarkRed" BorderThickness="2" Background="#1A1A1A">
+                <!-- שימוש ב-OpacityMask לעיגול התמונה בצורה מושלמת -->
+                <Border.OpacityMask>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border Width="180" Height="180" CornerRadius="20" Background="White"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.OpacityMask>
+
             </Border>
+            <Image x:Name="pic" Grid.Column="1" Grid.Row="0"  Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="HighQuality" Height="180" Width="180"/>
+    
+
         </Grid>
 
         <!-- שורת נתונים מעוגלת עם אייקונים -->

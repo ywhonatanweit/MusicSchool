@@ -23,10 +23,10 @@
         <!-- כלים -->
         <Grid Grid.Row="1" Margin="20,0">
             <ComboBox x:Name="cmbSort" HorizontalAlignment="Left" Width="180" Height="40" 
-                      Background="Black" Foreground="White" BorderBrush="DarkRed"
+                      Background="Black" Foreground="DarkRed" BorderBrush="DarkRed"
                       SelectionChanged="cmbSort_SelectionChanged">
                 <ComboBoxItem Content="מיין לפי" IsSelected="True"/>
-                <ComboBoxItem Content="שם (א-ת)"/>
+                <ComboBoxItem Content="שם"/>
                 <ComboBoxItem Content="קל לקשה"/>
                 <ComboBoxItem Content="קשה לקל"/>
             </ComboBox>

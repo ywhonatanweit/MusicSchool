@@ -31,7 +31,7 @@
         <!-- שורת כלים: מיון וכפתור סינון -->
         <Grid Grid.Row="1" Margin="20,0">
             <ComboBox x:Name="cmbSort" Grid.Row="1" HorizontalAlignment="Left" SelectedIndex="0" FontSize="18" 
-          Width="180" Height="40" Background="Black" Foreground="White" BorderBrush="DarkRed" 
+          Width="180" Height="40" Background="Black" Foreground="DarkRed" BorderBrush="DarkRed" 
           SelectionChanged="cmbSort_SelectionChanged">
                 <ComboBoxItem Content="מיין לפי" />
                 <ComboBoxItem Content="(א-ב (שם שיר"/>

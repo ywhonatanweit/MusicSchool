@@ -1,4 +1,5 @@
 ﻿using Model;
+using NoaMedia;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -31,13 +32,13 @@ namespace MusicSchoolWpf
 
 
         }
-        private async void GetSong(song s) 
+        private async void GetSong(song s)
         {
             LyricsList ly = await apiService.SelectAllLyrics();
-            List < lyrics > currentLy = (List<lyrics>)ly.FindAll(x => x.Songid.Id == s.Id) ;
+            List<lyrics> currentLy = (List<lyrics>)ly.FindAll(x => x.Songid.Id == s.Id);
             currentLy.OrderBy(x => x.Placment).ToList();
 
-             currentLy = ly.Where(x => x.Songid.Id == s.Id).OrderBy(x => x.Placment).ToList();
+            currentLy = ly.Where(x => x.Songid.Id == s.Id).OrderBy(x => x.Placment).ToList();
 
             // המיון לא בטוח טוב אולי כדאי להשאיר רק את השורה האחרונה וליצור בה את קארנטלי בתור ואר
 
@@ -50,12 +51,18 @@ namespace MusicSchoolWpf
             artistbox.Text = ("artist " + s.Artistid.Name);
             namebox.Text = s.Name;
             lanbox.Text = s.Languageid.Languagename;
+            if (s.SongPic != null) // אם ה-Image הוא byte[]
+            {
+                pic.Source = ImageExtensions.ByteToImage(Convert.FromBase64String(s.SongPic));
+            }
+        
+    
 
-            // כאן תוכל להוסיף טעינת תמונה אם יש לך נתיב ב-s.Pic
-            // if (!string.IsNullOrEmpty(s.Pic)) imgSong.Source = new BitmapImage(new Uri(s.Pic));
+        // כאן תוכל להוסיף טעינת תמונה אם יש לך נתיב ב-s.Pic
+        // if (!string.IsNullOrEmpty(s.Pic)) imgSong.Source = new BitmapImage(new Uri(s.Pic));
 
 
-            songData.Children.Clear();
+        songData.Children.Clear();
 
             foreach (lyrics lyr in currentLy)
             {
