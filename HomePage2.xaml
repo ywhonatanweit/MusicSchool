@@ -275,7 +275,7 @@
                 </Border>
 
                 <!-- אקורדים -->
-                <Border Margin="4,0,0,4" Cursor="Hand" 
+                <Border Margin="4,0,0,4" Cursor="Hand" MouseLeftButtonDown="ChordClick"
             CornerRadius="11"
              Background="#141414"
             BorderBrush="DarkRed"

@@ -6,6 +6,8 @@ namespace NoaMedia
 {
     public static class ImageExtensions
     {
+
+
         public static BitmapImage ByteToImage(this byte[] array)
         {
             if (array == null || array.Length == 0) return null;

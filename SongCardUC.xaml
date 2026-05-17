@@ -25,9 +25,8 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- תמונה -->
-            <!--<Image x:Name="pic" Grid.RowSpan="3" Source="pack://application:,,,/Resources/music_placeholder.png" Margin="5"/>-->
-
+             <!--תמונה-->
+            <Image x:Name="pic" Grid.Column="0" Grid.Row="1"  Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="HighQuality"/>
             <!-- שם השיר והדירוג -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <TextBlock x:Name="name" Text="שם השיר" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>

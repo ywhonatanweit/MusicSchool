@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Threading.Tasks;
-
+using MaterialDesignThemes.Wpf; // וודא שהספרייה מותקנת
 
 namespace MusicSchoolWpf
 {
@@ -16,12 +16,11 @@ namespace MusicSchoolWpf
         private bool isPlaying = false;
         private bool pendulumDirection = true; // true = ימין, false = שמאל
 
-        // נקודת המרכז של המטוטלת
         private const double CenterX = 80;
         private const double CenterY = 80;
         private const double ArmLength = 68;
         private const double BobRadius = 10;
-        private const double SwingAngle = 35; // מעלות
+        private const double SwingAngle = 35;
 
         public metronome()
         {
@@ -30,48 +29,36 @@ namespace MusicSchoolWpf
             metronomeTimer = new DispatcherTimer();
             metronomeTimer.Tick += MetronomeTimer_Tick;
 
-            // סנכרון ה-Slider עם ה-BPM ההתחלתי
             BpmSlider.Value = bpm;
             UpdateBpmText();
-            SetPendulumPosition(0); // מיקום התחלתי - אמצע
+            SetPendulumPosition(0);
         }
-
-        // ==================== BPM Logic ====================
 
         private void IncreaseBpm(object sender, RoutedEventArgs e)
         {
-            bpm = Math.Min(bpm + 5, 240);
+            bpm = Math.Min(bpm + 1, 240); // העלאה ב-1 לדיוק, אפשר להשאיר 5
             BpmSlider.Value = bpm;
-            UpdateBpmText();
-            UpdateTimerInterval();
         }
 
         private void DecreaseBpm(object sender, RoutedEventArgs e)
         {
-            bpm = Math.Max(bpm - 5, 40);
+            bpm = Math.Max(bpm - 1, 40);
             BpmSlider.Value = bpm;
-            UpdateBpmText();
-            UpdateTimerInterval();
         }
 
         private void UpdateBpmText()
         {
-            BpmTextBox.Text = bpm.ToString();
+            if (BpmTextBox != null)
+                BpmTextBox.Text = bpm.ToString();
         }
 
         private void UpdateTimerInterval()
         {
             if (bpm > 0)
             {
-                double intervalMs = bpm/60000.0 ;
+                // התיקון הקריטי: 60,000 חלקי BPM
+                double intervalMs = 60000.0 / bpm;
                 metronomeTimer.Interval = TimeSpan.FromMilliseconds(intervalMs);
-            }
-            else
-            {
-                // אם ה-BPM לא תקין, עוצרים את הטיימר כדי למנוע קריסה
-                metronomeTimer.Stop();
-                isPlaying = false;
-                UpdatePlayIcon(false);
             }
         }
 
@@ -79,52 +66,31 @@ namespace MusicSchoolWpf
         {
             bpm = (int)e.NewValue;
             UpdateBpmText();
-            UpdateTimerInterval();
+            if (isPlaying) UpdateTimerInterval();
         }
-
-        // ==================== Play / Stop ====================
 
         private void playbpm(object sender, RoutedEventArgs e)
         {
-            if (!isPlaying)
-            {
-                StartMetronome();
-            }
-            else
-            {
-                StopMetronome();
-            }
+            if (!isPlaying) StartMetronome();
+            else StopMetronome();
         }
 
         private void StartMetronome()
         {
-            if (bpm <= 0) return;
-
             isPlaying = true;
-            pendulumDirection = true;
-
-            // החלף אייקון ל-Stop
-            var icon = ((Button)FindName("") ?? null);
             UpdatePlayIcon(true);
-
             UpdateTimerInterval();
             metronomeTimer.Start();
-
-            // פעם ראשונה מיידית
-            Tick();
+            Tick(); // הפעלה מיידית של הפעימה הראשונה
         }
 
         private void StopMetronome()
         {
             isPlaying = false;
             metronomeTimer.Stop();
-
-            // החזר מטוטלת למרכז בהדרגה
-            AnimatePendulumToCenter();
             UpdatePlayIcon(false);
+            AnimatePendulumToCenter();
         }
-
-        // ==================== Timer Tick ====================
 
         private void MetronomeTimer_Tick(object sender, EventArgs e)
         {
@@ -133,17 +99,14 @@ namespace MusicSchoolWpf
 
         private void Tick()
         {
-            // צליל
-            Task.Run(() => Console.Beep(pendulumDirection ? 1200 : 900, 60));
+            // השמעת צליל (בנפרד כדי לא לתקוע את ה-UI)
+            Task.Run(() => Console.Beep(pendulumDirection ? 1000 : 800, 50));
 
-            // אנימציית מטוטלת
             double targetAngle = pendulumDirection ? SwingAngle : -SwingAngle;
             AnimatePendulum(targetAngle);
 
             pendulumDirection = !pendulumDirection;
         }
-
-        // ==================== Pendulum Animation ====================
 
         private void SetPendulumPosition(double angleDegrees)
         {
@@ -162,21 +125,19 @@ namespace MusicSchoolWpf
         {
             double intervalMs = 60000.0 / bpm;
 
-            // חישוב מיקום יעד
             double rad = targetAngleDegrees * Math.PI / 180;
             double endX = CenterX + ArmLength * Math.Sin(rad);
             double endY = CenterY + ArmLength * Math.Cos(rad);
 
-            var duration = new Duration(TimeSpan.FromMilliseconds(intervalMs * 0.9));
+            // האנימציה צריכה לקחת בדיוק את זמן ה-Interval
+            var duration = new Duration(TimeSpan.FromMilliseconds(intervalMs));
             var easing = new SineEase { EasingMode = EasingMode.EaseInOut };
 
-            // אנימציית X2 של הקו
             var armX = new DoubleAnimation(endX, duration) { EasingFunction = easing };
             var armY = new DoubleAnimation(endY, duration) { EasingFunction = easing };
             PendulumArm.BeginAnimation(System.Windows.Shapes.Line.X2Property, armX);
             PendulumArm.BeginAnimation(System.Windows.Shapes.Line.Y2Property, armY);
 
-            // אנימציית הכדור
             var bobX = new DoubleAnimation(endX - BobRadius, duration) { EasingFunction = easing };
             var bobY = new DoubleAnimation(endY - BobRadius, duration) { EasingFunction = easing };
             PendulumBob.BeginAnimation(Canvas.LeftProperty, bobX);
@@ -185,41 +146,20 @@ namespace MusicSchoolWpf
 
         private void AnimatePendulumToCenter()
         {
-            var duration = new Duration(TimeSpan.FromMilliseconds(400));
+            var duration = new Duration(TimeSpan.FromMilliseconds(300));
             var easing = new SineEase { EasingMode = EasingMode.EaseOut };
 
-            var armX = new DoubleAnimation(CenterX, duration) { EasingFunction = easing };
-            var armY = new DoubleAnimation(CenterY + ArmLength, duration) { EasingFunction = easing };
-            PendulumArm.BeginAnimation(System.Windows.Shapes.Line.X2Property, armX);
-            PendulumArm.BeginAnimation(System.Windows.Shapes.Line.Y2Property, armY);
-
-            var bobX = new DoubleAnimation(CenterX - BobRadius, duration) { EasingFunction = easing };
-            var bobY = new DoubleAnimation(CenterY + ArmLength - BobRadius, duration) { EasingFunction = easing };
-            PendulumBob.BeginAnimation(Canvas.LeftProperty, bobX);
-            PendulumBob.BeginAnimation(Canvas.TopProperty, bobY);
+            PendulumArm.BeginAnimation(System.Windows.Shapes.Line.X2Property, new DoubleAnimation(CenterX, duration) { EasingFunction = easing });
+            PendulumArm.BeginAnimation(System.Windows.Shapes.Line.Y2Property, new DoubleAnimation(CenterY + ArmLength, duration) { EasingFunction = easing });
+            PendulumBob.BeginAnimation(Canvas.LeftProperty, new DoubleAnimation(CenterX - BobRadius, duration) { EasingFunction = easing });
+            PendulumBob.BeginAnimation(Canvas.TopProperty, new DoubleAnimation(CenterY + ArmLength - BobRadius, duration) { EasingFunction = easing });
         }
-
-        // ==================== Icon Toggle ====================
 
         private void UpdatePlayIcon(bool playing)
         {
-            // מחפש את האייקון בתוך הכפתור
-            var playButton = FindVisualChild<Button>(this);
-            // אם רוצים לשנות את האייקון - אפשר לעשות זאת ידנית ב-XAML עם Trigger
-            // כאן פשוט משנים את ה-ToolTip
+            // הגישה הישירה והבטוחה ביותר
+            ButtonIcon.Kind = playing ? PackIconKind.Stop : PackIconKind.Play;
+            PlayPauseButton.ToolTip = playing ? "Stop" : "Play";
         }
-
-        private static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is T result) return result;
-                var found = FindVisualChild<T>(child);
-                if (found != null) return found;
-            }
-            return null;
-        }
-
     }
 }

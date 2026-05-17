@@ -46,52 +46,32 @@
       Title="metronome">
 
     <Grid>
-        <!-- כותרת המטרונום -->
+        <!-- כותרת -->
         <TextBlock Foreground="DarkRed" Text="METRONOME" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="45" Margin="0,20,0,0"/>
 
-        <Canvas x:Name="PendulumCanvas" Width="160" Height="160" 
-         HorizontalAlignment="Center" Margin="0,0,0,190">
-            <!-- ציר -->
-            <Ellipse Canvas.Left="74" Canvas.Top="74"
-              Width="12" Height="12" Fill="DarkRed"/>
-            <!-- זרוע -->
-            <Line x:Name="PendulumArm"
-           X1="80" Y1="80" X2="80" Y2="148"
-           Stroke="DarkRed" StrokeThickness="2.5"
-           StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-            <!-- כדור -->
-            <Ellipse x:Name="PendulumBob"
-              Canvas.Left="70" Canvas.Top="138"
-              Width="20" Height="20"
-              Fill="#1E1E1E" Stroke="DarkRed" StrokeThickness="1.5"/>
+        <!-- קנבס מטוטלת -->
+        <Canvas x:Name="PendulumCanvas" Width="160" Height="160" HorizontalAlignment="Center" Margin="0,0,0,190">
+            <Ellipse Canvas.Left="74" Canvas.Top="74" Width="12" Height="12" Fill="DarkRed"/>
+            <Line x:Name="PendulumArm" X1="80" Y1="80" X2="80" Y2="148" Stroke="DarkRed" StrokeThickness="2.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Ellipse x:Name="PendulumBob" Canvas.Left="70" Canvas.Top="138" Width="20" Height="20" Fill="#1E1E1E" Stroke="DarkRed" StrokeThickness="1.5"/>
         </Canvas>
 
-        <!-- StackPanel עבור BPM עם טקסט -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,120,0,0" >
-            <TextBox x:Name="BpmTextBox" Text="5" Foreground="DarkRed" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="40" FontSize="20" TextAlignment="Center" />
+        <!-- BPM Display -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,120,0,0">
+            <TextBox x:Name="BpmTextBox" IsReadOnly="True" Text="60" Foreground="DarkRed" HorizontalAlignment="Center" Width="100" Height="40" FontSize="20" TextAlignment="Center" BorderThickness="0" Background="Transparent"/>
             <TextBlock Foreground="DarkRed" Text="bpm" FontSize="20" HorizontalAlignment="Center" />
         </StackPanel>
 
-        <!-- כפתור פלוס -->
+        <!-- כפתורים -->
         <Button Background="DarkRed" Content="+" HorizontalAlignment="Right" VerticalAlignment="Center" Width="50" Height="50" Margin="0,120,150,0" FontSize="20" Click="IncreaseBpm"/>
-
-        <!-- כפתור מינוס -->
         <Button Background="DarkRed" Content="-" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Height="50" Margin="150,120,0,0" FontSize="20" Click="DecreaseBpm"/>
 
-        <Slider x:Name="BpmSlider" VerticalAlignment="Center"
-         Minimum="40" Maximum="240" Value="60"
-         Margin="30,230,30,0"
-         Foreground="DarkRed"
-         ValueChanged="BpmSlider_ValueChanged"/>
+        <Slider x:Name="BpmSlider" VerticalAlignment="Center" Minimum="40" Maximum="240" Value="60" Margin="50,230,50,0" Foreground="DarkRed" ValueChanged="BpmSlider_ValueChanged"/>
 
-
-        <Button Margin="0,300,0,0" Click="playbpm" Background="DarkRed" x:Name="PlayPauseIcon"
-                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                Style="{StaticResource MaterialDesignIconButton}"
-                ToolTip="Play">
-            <materialDesign:PackIcon Kind="Play" Width="60" Height="60" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+        <!-- כפתור הפעלה -->
+        <Button x:Name="PlayPauseButton" Margin="0,320,0,0" Click="playbpm" Background="DarkRed" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Play">
+            <materialDesign:PackIcon x:Name="ButtonIcon" Kind="Play" Width="60" Height="60" Foreground="White"/>
         </Button>
-
     </Grid>
 </Page>
 

@@ -45,6 +45,10 @@ namespace MusicSchoolWpf
 
         }
 
-      
+        private void ChordClick(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new chordlab());
+
+        }
     }
 }

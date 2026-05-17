@@ -1,4 +1,5 @@
 ﻿using Model;
+using NoaMedia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,10 @@ namespace MusicSchoolWpf
             lan.Text = s.Languageid.Languagename;
             genre.Text = s.Gaenreid.Genrename;
             diff.Value = s.Difficultyid.Id;
-
+            if (s.SongPic != null)
+            {
+                pic.Source = ImageExtensions.ByteToImage(Convert.FromBase64String(s.SongPic));
+            }
         }
 
         private void Show(object sender, RoutedEventArgs e)
