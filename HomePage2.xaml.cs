@@ -50,5 +50,13 @@ namespace MusicSchoolWpf
             NavigationService.Navigate(new chordlab());
 
         }
+
+        private void HomeClick(object sender, MouseButtonEventArgs e)
+        {
+            string name = username.Text;
+            
+            NavigationService.Navigate(new HomePage2(name));
+
+        }
     }
 }

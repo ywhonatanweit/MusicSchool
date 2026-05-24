@@ -37,7 +37,7 @@
                     </Ellipse.Fill>
                 </Ellipse>
 
-                <Border Width="38"
+                <Border Width="38" MouseLeftButtonDown="HomeClick"
                         Height="38"
                         CornerRadius="9"
                         Background="#140A0A"
@@ -52,7 +52,7 @@
                                                VerticalAlignment="Center"/>
                 </Border>
 
-                <Border Width="38"
+                <Border Width="38" MouseLeftButtonDown="songsclick"
                         Height="38"
                         CornerRadius="9"
                         Background="#111111"
@@ -66,7 +66,7 @@
                                                VerticalAlignment="Center"/>
                 </Border>
 
-                <Border Width="38"
+                <Border Width="38" MouseLeftButtonDown="metroclick"
                         Height="38"
                         CornerRadius="9"
                         Background="#111111"
@@ -80,13 +80,13 @@
                                                VerticalAlignment="Center"/>
                 </Border>
 
-                <Border Width="38"
+                <Border Width="38" MouseLeftButtonDown="ChordClick"
                         Height="38"
                         CornerRadius="9"
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="Microphone"
+                    <materialDesign:PackIcon Kind="GuitarAcoustic"
                                                Foreground="#2E2E2E"
                                                Width="17"
                                                Height="17"
@@ -94,13 +94,13 @@
                                                VerticalAlignment="Center"/>
                 </Border>
 
-                <Border Width="38"
+                <Border Width="38" MouseLeftButtonDown="tunerclick"
                         Height="38"
                         CornerRadius="9"
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="PlaylistMusic"
+                    <materialDesign:PackIcon Kind="Tune"
                                                Foreground="#2E2E2E"
                                                Width="17"
                                                Height="17"
@@ -110,8 +110,8 @@
 
             </StackPanel>
         </Border>
-
-        <Grid Grid.Column="1">
+        <!--<Window x:Name="FRAME" Grid.Column="1" Background="#080808">-->
+        <Grid Grid.Column="1" > 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -346,6 +346,7 @@
                        Margin="18,14,18,14"/>
 
         </Grid>
+        <!--</Window>-->
     </Grid>
 
 </Page>

@@ -14,16 +14,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Model">
       <HintPath>..\MusicSchool project\Service\bin\Debug\net8.0\Model.dll</HintPath>
     </Reference>
     <Reference Include="Service">
       <HintPath>..\MusicSchool project\Service\bin\Debug\net8.0\Service.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="pages\" />
+    <Reference Include="ViewModel">
+      <HintPath>..\MusicSchool project\Service\bin\Debug\net8.0\ViewModel.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
