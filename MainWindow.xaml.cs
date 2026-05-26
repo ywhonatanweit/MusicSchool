@@ -62,6 +62,54 @@ namespace MusicSchoolWpf
             {
                 SideBar.Visibility = Visibility.Visible;
             }
+
+            if (e.Content is HomePage2)
+            {
+                HomeIcon.Foreground = Brushes.Red;
+            }
+            else
+            {
+                HomeIcon.Foreground = (Brush)new BrushConverter().ConvertFromString("#2E2E2E");
+            }
+
+            if (e.Content is songpage)
+            {
+                songicon.Foreground = Brushes.Red;
+            }
+            else
+            {
+                songicon.Foreground = (Brush)new BrushConverter().ConvertFromString("#2E2E2E");
+            }
+
+
+            if (e.Content is chordlab)
+            {
+                chordicon.Foreground = Brushes.Red;
+            }
+            else
+            {
+                chordicon.Foreground = (Brush)new BrushConverter().ConvertFromString("#2E2E2E");
+            }
+
+            if (e.Content is metronome)
+            {
+                metroicon.Foreground = Brushes.Red;
+            }
+            else
+            {
+                metroicon.Foreground = (Brush)new BrushConverter().ConvertFromString("#2E2E2E");
+            }
+
+            if (e.Content is Tuner)
+            {
+                tunericon.Foreground = Brushes.Red;
+            }
+            else
+            {
+                tunericon.Foreground = (Brush)new BrushConverter().ConvertFromString("#2E2E2E");
+            }
+
+
         }
     }
 }

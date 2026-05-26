@@ -47,7 +47,7 @@
                                                Width="17"
                                                Height="17"
                                                HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
+                                               VerticalAlignment="Center" x:Name="HomeIcon"/>
                 </Border>
 
                 <Border Width="38" MouseLeftButtonDown="songsclick"
@@ -56,7 +56,7 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="MusicNote"
+                    <materialDesign:PackIcon Kind="MusicNote" Name="songicon"
                                                Foreground="#2E2E2E"
                                                Width="17"
                                                Height="17"
@@ -70,7 +70,7 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="Metronome"
+                    <materialDesign:PackIcon Kind="Metronome" Name="metroicon"
                                                Foreground="#2E2E2E"
                                                Width="17"
                                                Height="17"
@@ -84,7 +84,7 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="GuitarAcoustic"
+                    <materialDesign:PackIcon Kind="GuitarAcoustic" Name="chordicon"
                                                Foreground="#2E2E2E"
                                                Width="17"
                                                Height="17"
@@ -98,7 +98,7 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="Tune"
+                    <materialDesign:PackIcon Kind="Tune" Name="tunericon"
                                                Foreground="#2E2E2E"
                                                Width="17"
                                                Height="17"
