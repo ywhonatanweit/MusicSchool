@@ -28,6 +28,7 @@ namespace MusicSchoolWpf
         PersonList plist = new PersonList();
         public LoginPage()
         {
+            
             InitializeComponent();
             GetAllPersons();
         }

@@ -6,10 +6,109 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicSchoolWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="#080808">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
         <!--<Frame Source="AllMySongsPage.xaml"/>-->
+        <Border Grid.Column="0" x:Name="SideBar"
+                Background="#0A0A0A"
+                BorderBrush="#141414"
+                BorderThickness="0,0,1,0">
 
-        <Frame Source="LoginPage.xaml"/>
+            <StackPanel HorizontalAlignment="Center"
+                        Margin="0,18,0,18">
+
+                <Ellipse Width="38"
+                         Height="38"
+                         Margin="0,0,0,14"
+                         Stroke="#CC2200"
+                         StrokeThickness="1.5"
+                         
+                         >
+                    <Ellipse.Fill>
+                        <SolidColorBrush Color="#110808"/>
+
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <Border Width="38" MouseLeftButtonDown="HomeClick"
+                        Height="38"
+                        CornerRadius="9"
+                        Background="#140A0A"
+                        Margin="0,4"
+                        BorderBrush="#55CC2200"
+                        BorderThickness="0.5">
+                    <materialDesign:PackIcon Kind="Home"
+                                               Foreground="#CC2200"
+                                               Width="17"
+                                               Height="17"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                </Border>
+
+                <Border Width="38" MouseLeftButtonDown="songsclick"
+                        Height="38"
+                        CornerRadius="9"
+                        Background="#111111"
+                        Margin="0,4"
+                        Cursor="Hand">
+                    <materialDesign:PackIcon Kind="MusicNote"
+                                               Foreground="#2E2E2E"
+                                               Width="17"
+                                               Height="17"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                </Border>
+
+                <Border Width="38" MouseLeftButtonDown="metroclick"
+                        Height="38"
+                        CornerRadius="9"
+                        Background="#111111"
+                        Margin="0,4"
+                        Cursor="Hand">
+                    <materialDesign:PackIcon Kind="Metronome"
+                                               Foreground="#2E2E2E"
+                                               Width="17"
+                                               Height="17"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                </Border>
+
+                <Border Width="38" MouseLeftButtonDown="ChordClick"
+                        Height="38"
+                        CornerRadius="9"
+                        Background="#111111"
+                        Margin="0,4"
+                        Cursor="Hand">
+                    <materialDesign:PackIcon Kind="GuitarAcoustic"
+                                               Foreground="#2E2E2E"
+                                               Width="17"
+                                               Height="17"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                </Border>
+
+                <Border Width="38" MouseLeftButtonDown="tunerclick"
+                        Height="38"
+                        CornerRadius="9"
+                        Background="#111111"
+                        Margin="0,4"
+                        Cursor="Hand">
+                    <materialDesign:PackIcon Kind="Tune"
+                                               Foreground="#2E2E2E"
+                                               Width="17"
+                                               Height="17"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                </Border>
+
+            </StackPanel>
+        </Border>
+
+        <Frame Grid.Column="1" x:Name="MainFrame" Source="LoginPage.xaml" NavigationUIVisibility="Hidden" Navigated="MainFrame_Navigated"/>
     </Grid>
 </Window>
