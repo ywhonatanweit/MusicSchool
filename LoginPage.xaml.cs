@@ -25,16 +25,25 @@ namespace MusicSchoolWpf
     public partial class LoginPage : Page
     {
         ApiService perserv = new ApiService();
+        ApiService adserv = new ApiService();
+
         PersonList plist = new PersonList();
+        AdminList adlist = new AdminList();
+
         public LoginPage()
         {
             
             InitializeComponent();
             GetAllPersons();
+            GetAllAdmins();
         }
         private async void GetAllPersons()
         {
             plist = await perserv.SelectAllPersons();
+        }
+        private async void GetAllAdmins()
+        {
+            adlist = await adserv.SelectAllAdmins();
         }
         private void Login(object sender, RoutedEventArgs e)
         {
@@ -72,9 +81,12 @@ namespace MusicSchoolWpf
         private void SwitchTologin(object sender, RoutedEventArgs e)
         {
             signuppannel.Visibility = Visibility.Collapsed;
+            adminpannel.Visibility = Visibility.Collapsed;
             loginpannel.Visibility = Visibility.Visible;
             signuppassword.Clear();
             signupusername.Clear();
+            adminpassword.Clear();
+            adminusername.Clear();
         }
 
         private void SwitchToSignup(object sender, RoutedEventArgs e)
@@ -83,6 +95,21 @@ namespace MusicSchoolWpf
             signuppannel.Visibility = Visibility.Visible;
             loginpassword.Clear();
             loginusername.Clear();
+            adminpassword.Clear();
+            adminusername.Clear();
+            loginpannel.Visibility = Visibility.Visible;
+
+        }
+        private void SwitchToadmin(object sender, RoutedEventArgs e)
+        {
+            loginpannel.Visibility = Visibility.Collapsed;
+            signuppannel.Visibility = Visibility.Visible;
+            loginpassword.Clear();
+            loginusername.Clear();
+            adminpassword.Clear();
+            adminusername.Clear();
+            loginpannel.Visibility = Visibility.Visible;
+
         }
 
         private void newsignup(object sender, RoutedEventArgs e)
@@ -118,9 +145,33 @@ namespace MusicSchoolWpf
 
         private void Admin(object sender, RoutedEventArgs e)
         {
-            string name = "admin";
-            this.NavigationService.Navigate(new HomePage2(name));
+            loginpannel.Visibility = Visibility.Collapsed;
+            signuppannel.Visibility = Visibility.Collapsed;
+            adminpannel.Visibility = Visibility.Visible;
+
+            loginpassword.Clear();
+            loginusername.Clear();
+            signuppassword.Clear();
+            signupusername.Clear();
+        }
+
+        private void adminsignupclick(object sender, RoutedEventArgs e)
+        {
+            string name = adminusername.Text;
+            string pass = adminpassword.Password;
+            //MessageBox.Show(plist[0].Name + " " + plist[0].Code);
+            Admin user = adlist.Find(x => x.Name == name && x.Code == pass);
+            if (user != null)
+            {
+                MessageBox.Show("ברוך הבא, מנהל מערכת!");
+                this.NavigationService.Navigate(new AdminDashboardPage());
+            }
+            else
+            {
+                MessageBox.Show("פרטי אדמין שגויים או שאינך מוגדר כמנהל");
+            }
 
         }
     }
-}
+    }
+

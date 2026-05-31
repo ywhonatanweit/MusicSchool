@@ -1,0 +1,45 @@
+﻿<Page x:Class="MusicSchoolWpf.AuthPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AuthPage" Background="Black">
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
+
+        <Grid x:Name="LoginGrid" Visibility="Visible">
+            <Border Background="#1A1A1A" CornerRadius="20" BorderBrush="DarkRed" BorderThickness="2" Padding="30">
+                <StackPanel>
+                    <TextBlock Text="ADMIN LOGIN" Foreground="DarkRed" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                    <TextBlock Text=":שם משתמש" Foreground="White" HorizontalAlignment="Right" Margin="0,5"/>
+                    <TextBox x:Name="txtLoginName" Background="#222" Foreground="White" BorderBrush="#333" Height="35" VerticalContentAlignment="Center"/>
+
+                    <TextBlock Text=":קוד אדמין" Foreground="White" HorizontalAlignment="Right" Margin="0,15,0,5"/>
+                    <PasswordBox x:Name="txtLoginCode" Background="#222" Foreground="White" BorderBrush="#333" Height="35" VerticalContentAlignment="Center"/>
+
+                    <Button Content="התחבר כאדמין" Background="DarkRed" Foreground="White" Height="40" Margin="0,25,0,10" Click="BtnLogin_Click"/>
+
+                    <Button Content="אין לך חשבון? להרשמה" Background="Transparent" Foreground="Gray" BorderThickness="0" Click="TogglePanels_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="RegisterGrid" Visibility="Collapsed">
+            <Border Background="#1A1A1A" CornerRadius="20" BorderBrush="DarkRed" BorderThickness="2" Padding="30">
+                <StackPanel>
+                    <TextBlock Text="ADMIN SIGN UP" Foreground="DarkRed" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                    <TextBlock Text=":שם מלא" Foreground="White" HorizontalAlignment="Right" Margin="0,5"/>
+                    <TextBox x:Name="txtRegName" Background="#222" Foreground="White" BorderBrush="#333" Height="35" VerticalContentAlignment="Center"/>
+
+                    <TextBlock Text=":קוד גישה חדש" Foreground="White" HorizontalAlignment="Right" Margin="0,15,0,5"/>
+                    <TextBox x:Name="txtRegCode" Background="#222" Foreground="White" BorderBrush="#333" Height="35" VerticalContentAlignment="Center"/>
+
+                    <Button Content="צור חשבון אדמין" Background="DarkRed" Foreground="White" Height="40" Margin="0,25,0,10" Click="BtnRegister_Click"/>
+
+                    <Button Content="כבר יש חשבון? להתחברות" Background="Transparent" Foreground="Gray" BorderThickness="0" Click="TogglePanels_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Page>
