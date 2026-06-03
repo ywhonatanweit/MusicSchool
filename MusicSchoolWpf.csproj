@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
     <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="System.Text.Json" Version="10.0.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,13 +20,13 @@
 
   <ItemGroup>
     <Reference Include="Model">
-      <HintPath>..\MusicSchool project\Service\bin\Debug\net8.0\Model.dll</HintPath>
+      <HintPath>..\MusicSchool-project\Service\bin\Debug\net8.0\Model.dll</HintPath>
     </Reference>
     <Reference Include="Service">
-      <HintPath>..\MusicSchool project\Service\bin\Debug\net8.0\Service.dll</HintPath>
+      <HintPath>..\MusicSchool-project\Service\bin\Debug\net8.0\Service.dll</HintPath>
     </Reference>
     <Reference Include="ViewModel">
-      <HintPath>..\MusicSchool project\Service\bin\Debug\net8.0\ViewModel.dll</HintPath>
+      <HintPath>..\MusicSchool-project\Service\bin\Debug\net8.0\ViewModel.dll</HintPath>
     </Reference>
   </ItemGroup>
 

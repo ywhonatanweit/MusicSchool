@@ -39,23 +39,51 @@ namespace MusicSchoolWpf
         }
         private async void GetAllPersons()
         {
-            plist = await perserv.SelectAllPersons();
+            try
+            {
+                plist = await perserv.SelectAllPersons();
+            }
+            catch
+            {
+                MessageBox.Show("בעיה בטעינת המשתמשים מהשרת. ודא שה-API פועל.");
+            }
         }
         private async void GetAllAdmins()
         {
-            adlist = await adserv.SelectAllAdmins();
+            try
+            {
+                adlist = await adserv.SelectAllAdmins();
+            }
+            catch
+            {
+                MessageBox.Show("בעיה בטעינת מנהלי המערכת מהשרת. ודא שה-API פועל.");
+            }
         }
-        private void Login(object sender, RoutedEventArgs e)
+        private async void Login(object sender, RoutedEventArgs e)
         {
             string name = loginusername.Text;
             string pass = loginpassword.Password;
-            //MessageBox.Show(plist[0].Name + " " + plist[0].Code);
-            person user = plist.Find(x => x.Name == name && x.Code == pass);
-            if (user != null)
-            {
-                this.NavigationService.Navigate(new HomePage2(name));
-            }
 
+            try
+            {
+                plist = await perserv.SelectAllPersons();
+
+
+                person user = plist.Find(x => x.Name == name && x.Code == pass);
+
+                if (user != null)
+                {
+                    NavigationService.Navigate(new HomePage2(user.Name));
+                }
+                else
+                {
+                    MessageBox.Show("שם משתמש או סיסמה שגויים");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("בעיה בכניסה רגילה:\n" + ex.Message);
+            }
         }
 
 
@@ -92,12 +120,13 @@ namespace MusicSchoolWpf
         private void SwitchToSignup(object sender, RoutedEventArgs e)
         {
             loginpannel.Visibility = Visibility.Collapsed;
+            adminpannel.Visibility = Visibility.Collapsed;
             signuppannel.Visibility = Visibility.Visible;
+
             loginpassword.Clear();
             loginusername.Clear();
             adminpassword.Clear();
             adminusername.Clear();
-            loginpannel.Visibility = Visibility.Visible;
 
         }
         private void SwitchToadmin(object sender, RoutedEventArgs e)
@@ -137,7 +166,8 @@ namespace MusicSchoolWpf
             int x = await apiService.InsertAPerson(p);
             if (x > 0)
             {
-           
+                MessageBox.Show("ההרשמה לא נשמרה במסד הנתונים");
+
             }
 
 
@@ -155,22 +185,42 @@ namespace MusicSchoolWpf
             signupusername.Clear();
         }
 
-        private void adminsignupclick(object sender, RoutedEventArgs e)
+        private async void adminsignupclick(object sender, RoutedEventArgs e)
         {
             string name = adminusername.Text;
             string pass = adminpassword.Password;
-            //MessageBox.Show(plist[0].Name + " " + plist[0].Code);
-            Admin user = adlist.Find(x => x.Name == name && x.Code == pass);
-            if (user != null)
-            {
-                MessageBox.Show("ברוך הבא, מנהל מערכת!");
-                this.NavigationService.Navigate(new AdminDashboardPage());
-            }
-            else
-            {
-                MessageBox.Show("פרטי אדמין שגויים או שאינך מוגדר כמנהל");
-            }
 
+            try
+            {
+                plist = await perserv.SelectAllPersons();
+
+                person personUser = plist.Find(x => x.Name == name && x.Code == pass);
+
+                if (personUser == null)
+                {
+                    MessageBox.Show("שם משתמש או סיסמה שגויים");
+                    return;
+                }
+
+                adlist = await adserv.SelectAllAdmins();
+
+               
+                Admin adminUser = adlist.Find(x => x.Id == personUser.Id);
+
+                if (adminUser != null)
+                {
+                    MessageBox.Show("ברוך הבא, מנהל מערכת!");
+                    NavigationService.Navigate(new AdminDashboardPage(personUser.Name));
+                }
+                else
+                {
+                    MessageBox.Show("המשתמש קיים, אבל הוא לא מוגדר כמנהל מערכת");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("בעיה בכניסת אדמין:\n" + ex.Message);
+            }
         }
     }
     }
