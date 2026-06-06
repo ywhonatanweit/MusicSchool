@@ -48,12 +48,10 @@ namespace MusicSchoolWpf
                 difficulties = await api.SelectAllDifficulties();
                 chords = await api.SelectAllChords();
 
-                cmbArtist.ItemsSource = artists;
-                cmbArtist.DisplayMemberPath = "Name";
+                RefreshArtistsCombo();
+                RefreshGenresCombo();
 
-                cmbGenre.ItemsSource = genres;
-                cmbGenre.DisplayMemberPath = "Genrename";
-
+                cmbLanguage.ItemsSource = null;
                 cmbLanguage.ItemsSource = languages;
                 cmbLanguage.DisplayMemberPath = "Languagename";
 
@@ -167,7 +165,6 @@ namespace MusicSchoolWpf
 
             lblApiStatus.Text = "פרטי השיר נטענו. תמונה אינה חובה.";
 
-            // מונע הפעלה כפולה של האירוע אם לוחצים שוב על אותה תוצאה
             lstApiResults.SelectedItem = null;
         }
 
@@ -282,23 +279,6 @@ namespace MusicSchoolWpf
 
             List<ParsedLyricLine> parsedLines = SongTextParser.Parse(txtLyricsAndChords.Text);
 
-            List<string> missingChords = parsedLines
-                .Where(x => !string.IsNullOrWhiteSpace(x.ChordName))
-                .Where(x => FindChordByName(x.ChordName) == null)
-                .Select(x => x.ChordName)
-                .Distinct()
-                .ToList();
-
-            if (missingChords.Count > 0)
-            {
-                MessageBox.Show(
-                    "יש אקורדים שלא קיימים במסד הנתונים:\n" +
-                    string.Join(", ", missingChords) +
-                    "\n\nצריך להוסיף אותם קודם לספריית האקורדים."
-                );
-                return;
-            }
-
             difficulty selectedDifficulty = FindDifficulty((int)Math.Round(songRating.Value));
 
             song songToSave = new song
@@ -400,7 +380,7 @@ namespace MusicSchoolWpf
                     if (string.IsNullOrWhiteSpace(parsed.ChordName))
                         continue;
 
-                    chord? matchingChord = FindChordByName(parsed.ChordName);
+                    chord? matchingChord = await GetOrCreateChordByName(parsed.ChordName);
 
                     if (matchingChord == null)
                         continue;
@@ -653,6 +633,49 @@ namespace MusicSchoolWpf
             }
         }
 
+        private async Task<chord?> GetOrCreateChordByName(string? chordName)
+        {
+            if (string.IsNullOrWhiteSpace(chordName))
+                return null;
+
+            try
+            {
+                chords = await api.SelectAllChords();
+
+                chord? existingChord = chords.FirstOrDefault(x =>
+                    Normalize(x.Name) == Normalize(chordName));
+
+                if (existingChord != null)
+                    return existingChord;
+
+                difficulty easyDifficulty = FindDifficulty(1);
+
+                chord newChord = new chord
+                {
+                    Name = chordName.Trim(),
+                    Difficulty = easyDifficulty,
+                    Chordpic = "",
+                    Chordpath = ""
+                };
+
+                int insertResult = await api.InsertAChord(newChord);
+
+                if (insertResult <= 0)
+                    return null;
+
+                chords = await api.SelectAllChords();
+
+                chord? finalChord = chords.FirstOrDefault(x =>
+                    Normalize(x.Name) == Normalize(chordName));
+
+                return finalChord;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private void RefreshArtistsCombo()
         {
             cmbArtist.ItemsSource = null;
@@ -693,15 +716,6 @@ namespace MusicSchoolWpf
                 Id = diffValue,
                 Diff = diffValue
             };
-        }
-
-        private chord? FindChordByName(string? chordName)
-        {
-            if (string.IsNullOrWhiteSpace(chordName))
-                return null;
-
-            return chords.FirstOrDefault(x =>
-                Normalize(x.Name) == Normalize(chordName));
         }
 
         private void SelectComboById(ComboBox combo, int id)
