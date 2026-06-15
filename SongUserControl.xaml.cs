@@ -35,50 +35,45 @@ namespace MusicSchoolWpf
         private async void GetSong(song s)
         {
             LyricsList ly = await apiService.SelectAllLyrics();
-            List<lyrics> currentLy = (List<lyrics>)ly.FindAll(x => x.Songid.Id == s.Id);
-            currentLy.OrderBy(x => x.Placment).ToList();
 
-            currentLy = ly.Where(x => x.Songid.Id == s.Id).OrderBy(x => x.Placment).ToList();
-
-            // המיון לא בטוח טוב אולי כדאי להשאיר רק את השורה האחרונה וליצור בה את קארנטלי בתור ואר
-
-            //נתונים:
-
-
+            List<lyrics> currentLy = ly.Where(x => x.Songid.Id == s.Id).OrderBy(x => x.Placment).ToList();
 
             diffRating.Value = s.Difficultyid.Id;
             genrebox.Text = ("genre " + s.Gaenreid.Genrename);
             artistbox.Text = ("artist " + s.Artistid.Name);
             namebox.Text = s.Name;
             lanbox.Text = s.Languageid.Languagename;
-            if (s.SongPic != null) // אם ה-Image הוא byte[]
+
+            if (s.SongPic != null) 
             {
                 pic.Source = ImageExtensions.ByteToImage(Convert.FromBase64String(s.SongPic));
             }
-        
-    
 
-        // כאן תוכל להוסיף טעינת תמונה אם יש לך נתיב ב-s.Pic
-        // if (!string.IsNullOrEmpty(s.Pic)) imgSong.Source = new BitmapImage(new Uri(s.Pic));
-
-
-        songData.Children.Clear();
+            songData.Children.Clear();
 
             foreach (lyrics lyr in currentLy)
             {
-                StackPanel lyPanel = new StackPanel();
-                TextBlock chordText = new TextBlock();
-                chordText.Text = lyr.Chordid.Name.ToString();
+                StackPanel lyPanel = new StackPanel() { Margin = new Thickness(10, 0, 10, 10) };
+
+                if (lyr.Chordid != null && !string.IsNullOrEmpty(lyr.Chordid.Name))
+                {
+                    TextBlock chordText = new TextBlock();
+                    chordText.Text = lyr.Chordid.Name;
+                    chordText.Foreground = Brushes.DarkRed; 
+                    chordText.FontWeight = FontWeights.Bold;
+                    chordText.FontSize = 14;
+                    lyPanel.Children.Add(chordText);
+                }
+
                 TextBlock lyText = new TextBlock();
-                lyText.Text= lyr.Lyricsname;
-                lyPanel.Children.Add( chordText );
-                lyPanel.Children.Add( lyText );
-                songData.Children.Add ( lyPanel );
+                lyText.Text = lyr.Lyricsname;
+                lyText.Foreground = Brushes.White;
+                lyText.FontSize = 16;
+                lyPanel.Children.Add(lyText);
 
-
+                songData.Children.Add(lyPanel);
             }
         }
-
 
 
 
