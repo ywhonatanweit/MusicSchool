@@ -114,7 +114,7 @@
                         </TextBlock>
 
                         <Button Content="התחל שיעור"
-                                Click="songsclick"
+                                MouseLeftButtonDown="songsclick"
                                 Background="#CC2200"
                                 Foreground="White"
                                 FontSize="11"
@@ -155,94 +155,219 @@
             </Grid>
 
             <UniformGrid Grid.Row="3"
-             Rows="2"
+             Rows="3"
              Columns="2"
              Margin="18,0,18,0">
 
                 <!-- שירים -->
-                <Border Margin="0,0,4,4" MouseLeftButtonDown="songsclick"  
+                <Border Margin="0,0,4,4"
+            MouseLeftButtonDown="songsclick"
+            Cursor="Hand"
             CornerRadius="11"
             Background="#141414"
             BorderBrush="DarkRed"
             BorderThickness="1">
-                    <StackPanel Margin="14" >
-                        <Border Width="30" Height="30" CornerRadius="7"
-                    Background="#140A0A" BorderBrush="#22CC2200"
-                    BorderThickness="0.5" Margin="0,0,0,9">
+
+                    <StackPanel Margin="14">
+                        <Border Width="30"
+                    Height="30"
+                    CornerRadius="7"
+                    Background="#140A0A"
+                    BorderBrush="#22CC2200"
+                    BorderThickness="0.5"
+                    Margin="0,0,0,9">
+
                             <materialDesign:PackIcon Kind="MusicNote"
                                          Foreground="#CC2200"
-                                         Width="15" Height="15"
+                                         Width="15"
+                                         Height="15"
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="שירים" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold"/>
-                        <TextBlock Text="ספריית לימוד" Foreground="#383838" FontSize="10"/>
+
+                        <TextBlock Text="שירים"
+                       Foreground="#CCCCCC"
+                       FontSize="12"
+                       FontWeight="Bold"/>
+
+                        <TextBlock Text="ספריית לימוד"
+                       Foreground="#383838"
+                       FontSize="10"/>
                     </StackPanel>
                 </Border>
 
                 <!-- אקורדים -->
-                <Border Margin="4,0,0,4" Cursor="Hand" MouseLeftButtonDown="ChordClick"
+                <Border Margin="4,0,0,4"
+            Cursor="Hand"
+            MouseLeftButtonDown="ChordClick"
             CornerRadius="11"
-             Background="#141414"
+            Background="#141414"
             BorderBrush="DarkRed"
-             BorderThickness="1">
+            BorderThickness="1">
+
                     <StackPanel Margin="14">
-                        <Border Width="30" Height="30" CornerRadius="7"
-                    Background="#140A0A" BorderBrush="#22CC2200"
-                    BorderThickness="0.5" Margin="0,0,0,9">
+                        <Border Width="30"
+                    Height="30"
+                    CornerRadius="7"
+                    Background="#140A0A"
+                    BorderBrush="#22CC2200"
+                    BorderThickness="0.5"
+                    Margin="0,0,0,9">
+
                             <materialDesign:PackIcon Kind="GuitarAcoustic"
                                          Foreground="#CC2200"
-                                         Width="15" Height="15"
+                                         Width="15"
+                                         Height="15"
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="אקורדים" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold"/>
-                        <TextBlock Text="ספריית אקורדים" Foreground="#383838" FontSize="10"/>
+
+                        <TextBlock Text="אקורדים"
+                       Foreground="#CCCCCC"
+                       FontSize="12"
+                       FontWeight="Bold"/>
+
+                        <TextBlock Text="ספריית אקורדים"
+                       Foreground="#383838"
+                       FontSize="10"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- תרגול אקורדים רנדומלי -->
+                <Border Margin="4,4,0,4"
+Cursor="Hand"
+MouseLeftButtonDown="practiceclick"
+CornerRadius="11"
+Background="#141414"
+BorderBrush="DarkRed"
+BorderThickness="1">
+
+                    <StackPanel Margin="14">
+                        <Border Width="30"
+        Height="30"
+        CornerRadius="7"
+        Background="#140A0A"
+        BorderBrush="#22CC2200"
+        BorderThickness="0.5"
+        Margin="0,0,0,9">
+
+                            <materialDesign:PackIcon Kind="Shuffle"
+                             Foreground="#CC2200"
+                             Width="15"
+                             Height="15"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+                        </Border>
+
+                        <TextBlock Text="תרגול אקורדים"
+           Foreground="#CCCCCC"
+           FontSize="12"
+           FontWeight="Bold"/>
+
+                        <TextBlock Text="תרגול לפי קצב"
+           Foreground="#383838"
+           FontSize="10"/>
                     </StackPanel>
                 </Border>
 
                 <!-- טיונר -->
-                <Border Margin="0,4,4,0" Cursor="Hand" MouseLeftButtonDown="tunerclick"
+                <Border Margin="4,4,0,4"
+            Cursor="Hand"
+            MouseLeftButtonDown="tunerclick"
             CornerRadius="11"
-              Background="#141414"
-              BorderBrush="DarkRed"
-              BorderThickness="1">
+            Background="#141414"
+            BorderBrush="DarkRed"
+            BorderThickness="1">
+
                     <StackPanel Margin="14">
-                        <Border Width="30" Height="30" CornerRadius="7"
-                    Background="#140A0A" BorderBrush="#22CC2200"
-                    BorderThickness="0.5" Margin="0,0,0,9">
+                        <Border Width="30"
+                    Height="30"
+                    CornerRadius="7"
+                    Background="#140A0A"
+                    BorderBrush="#22CC2200"
+                    BorderThickness="0.5"
+                    Margin="0,0,0,9">
+
                             <materialDesign:PackIcon Kind="Tune"
                                          Foreground="#CC2200"
-                                         Width="15" Height="15"
+                                         Width="15"
+                                         Height="15"
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="טיונר" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold"/>
-                        <TextBlock Text="כוונון מיתרים" Foreground="#383838" FontSize="10"/>
+
+                        <TextBlock Text="טיונר"
+                       Foreground="#CCCCCC"
+                       FontSize="12"
+                       FontWeight="Bold"/>
+
+                        <TextBlock Text="כוונון מיתרים"
+                       Foreground="#383838"
+                       FontSize="10"/>
                     </StackPanel>
                 </Border>
 
                 <!-- מטרונום -->
-                <Border Margin="4,4,0,0" Cursor="Hand" MouseLeftButtonDown="metroclick" 
+                <Border Margin="0,4,4,0"
+            Cursor="Hand"
+            MouseLeftButtonDown="metroclick"
             CornerRadius="11"
-              Background="#141414"
-              BorderBrush="DarkRed"
-              BorderThickness="1">
-                    <StackPanel Margin="14" >
-                        <Border Width="30" Height="30" CornerRadius="7"
-                    Background="#140A0A" BorderBrush="#22CC2200"
-                    BorderThickness="0.5" Margin="0,0,0,9">
+            Background="#141414"
+            BorderBrush="DarkRed"
+            BorderThickness="1">
+
+                    <StackPanel Margin="14">
+                        <Border Width="30"
+                    Height="30"
+                    CornerRadius="7"
+                    Background="#140A0A"
+                    BorderBrush="#22CC2200"
+                    BorderThickness="0.5"
+                    Margin="0,0,0,9">
+
                             <materialDesign:PackIcon Kind="Metronome"
                                          Foreground="#CC2200"
-                                         Width="15" Height="15"
+                                         Width="15"
+                                         Height="15"
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="מטרונום" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold"/>
-                        <TextBlock Text="קצב ותזמון" Foreground="#383838" FontSize="10"/>
+
+                        <TextBlock Text="מטרונום"
+                       Foreground="#CCCCCC"
+                       FontSize="12"
+                       FontWeight="Bold"/>
+
+                        <TextBlock Text="קצב ותזמון"
+                       Foreground="#383838"
+                       FontSize="10"/>
                     </StackPanel>
                 </Border>
+                <Border Margin="0,6,6,0"
+         MouseLeftButtonDown="LogoutClick"
+         Cursor="Hand"
+         CornerRadius="12"
+         Background="#141414"
+         BorderBrush="#333"
+         BorderThickness="1">
 
+                    <StackPanel Margin="18">
+                        <materialDesign:PackIcon Kind="Logout"
+                                  Foreground="#888"
+                                  Width="28"
+                                  Height="28"/>
+
+                        <TextBlock Text="יציאה"
+                    Foreground="White"
+                    FontSize="15"
+                    FontWeight="Bold"
+                    Margin="0,12,0,4"/>
+
+                        <TextBlock Text="חזרה למסך ההתחברות"
+                    Foreground="#777"
+                    FontSize="11"/>
+                    </StackPanel>
+                </Border>
             </UniformGrid>
 
             <Rectangle Grid.Row="4"

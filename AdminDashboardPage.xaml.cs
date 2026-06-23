@@ -1,12 +1,14 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace MusicSchoolWpf
 {
     public partial class AdminDashboardPage : Page
     {
         private string adminName;
+
+        public string AdminName => adminName;
 
         public AdminDashboardPage() : this("Admin")
         {
@@ -15,6 +17,7 @@ namespace MusicSchoolWpf
         public AdminDashboardPage(string name)
         {
             InitializeComponent();
+
             adminName = name;
             username.Text = name;
         }
@@ -44,9 +47,19 @@ namespace MusicSchoolWpf
             NavigationService.Navigate(new metronome());
         }
 
+        private void ChordTrainerClick(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new ChordTrainerPage());
+        }
+
         private void LogoutClick(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.Navigate(new LoginPage());
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            if (mainWindow != null)
+            {
+                mainWindow.LogoutToLogin();
+            }
         }
     }
 }

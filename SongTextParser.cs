@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace MusicSchoolWpf
@@ -7,8 +6,8 @@ namespace MusicSchoolWpf
     public class ParsedLyricLine
     {
         public int Placement { get; set; }
-        public string ChordName { get; set; }
-        public string Text { get; set; }
+        public string ChordName { get; set; } = "";
+        public string Text { get; set; } = "";
     }
 
     public static class SongTextParser
@@ -70,7 +69,8 @@ namespace MusicSchoolWpf
                 string chordName = currentMatch.Groups["chord"].Value.Trim();
 
                 int textStart = currentMatch.Index + currentMatch.Length;
-                int textEnd = (i + 1 < matches.Count)
+
+                int textEnd = i + 1 < matches.Count
                     ? matches[i + 1].Index
                     : line.Length;
 

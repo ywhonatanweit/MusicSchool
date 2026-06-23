@@ -1,62 +1,63 @@
-﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Input;
 
 namespace MusicSchoolWpf
 {
-    /// <summary>
-    /// Interaction logic for HomePage2.xaml
-    /// </summary>
     public partial class HomePage2 : Page
     {
+        public string UserName => username.Text;
+
         public HomePage2(string name)
         {
             InitializeComponent();
+
             username.Text = name;
-            // לשים את האות הראשונה של השם בתוך העיגול משתמש
         }
 
-        private void tunerclick(object sender, RoutedEventArgs e)
+        private void tunerclick(object sender, MouseButtonEventArgs e)
         {
-            this.NavigationService.Navigate(new Tuner());
-
+            NavigationService.Navigate(new Tuner());
         }
-
-        private void songsclick(object sender, RoutedEventArgs e)
+        
+       private void practiceclick(object sender, MouseButtonEventArgs e)
         {
-            this.NavigationService.Navigate(new songpage());
+            NavigationService.Navigate(new Tuner());
+        }
+        private void songsclick(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new songpage());
         }
 
-        private void metroclick(object sender, RoutedEventArgs e)
+        private void metroclick(object sender, MouseButtonEventArgs e)
         {
             NavigationService.Navigate(new metronome());
-
         }
 
         private void ChordClick(object sender, MouseButtonEventArgs e)
         {
             NavigationService.Navigate(new chordlab());
+        }
 
+        private void ChordTrainerClick(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new ChordTrainerPage());
         }
 
         private void HomeClick(object sender, MouseButtonEventArgs e)
         {
-            string name = username.Text;
+            NavigationService.Navigate(new HomePage2(username.Text));
+        }
 
-            NavigationService.Navigate(new HomePage2(name));
+        private void LogoutClick(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
-        }   
+            if (mainWindow != null)
+            {
+                mainWindow.LogoutToLogin();
+            }
+        }
     }
 }

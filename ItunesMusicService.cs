@@ -17,8 +17,7 @@ namespace MusicSchoolWpf
 
             string encoded = Uri.EscapeDataString(searchText);
 
-            string url =
-                $"https://itunes.apple.com/search?term={encoded}&entity=song&limit={limit}";
+            string url = $"https://itunes.apple.com/search?term={encoded}&entity=song&limit={limit}";
 
             try
             {

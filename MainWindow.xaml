@@ -7,13 +7,13 @@
         xmlns:local="clr-namespace:MusicSchoolWpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="#080808">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <!--<Frame Source="AllMySongsPage.xaml"/>-->
+
         <Border Grid.Column="0" x:Name="SideBar"
                 Background="#0A0A0A"
                 BorderBrush="#141414"
@@ -26,12 +26,9 @@
                          Height="38"
                          Margin="0,0,0,14"
                          Stroke="#CC2200"
-                         StrokeThickness="1.5"
-                         
-                         >
+                         StrokeThickness="1.5">
                     <Ellipse.Fill>
                         <SolidColorBrush Color="#110808"/>
-
                     </Ellipse.Fill>
                 </Ellipse>
 
@@ -41,13 +38,16 @@
                         Background="#140A0A"
                         Margin="0,4"
                         BorderBrush="#55CC2200"
-                        BorderThickness="0.5">
+                        BorderThickness="0.5"
+                        Cursor="Hand">
+
                     <materialDesign:PackIcon Kind="Home"
-                                               Foreground="#CC2200"
-                                               Width="17"
-                                               Height="17"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" x:Name="HomeIcon"/>
+                                             Foreground="#CC2200"
+                                             Width="17"
+                                             Height="17"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             x:Name="HomeIcon"/>
                 </Border>
 
                 <Border Width="38" MouseLeftButtonDown="songsclick"
@@ -56,12 +56,14 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="MusicNote" Name="songicon"
-                                               Foreground="#2E2E2E"
-                                               Width="17"
-                                               Height="17"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
+
+                    <materialDesign:PackIcon Kind="MusicNote"
+                                             Name="songicon"
+                                             Foreground="#2E2E2E"
+                                             Width="17"
+                                             Height="17"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
                 </Border>
 
                 <Border Width="38" MouseLeftButtonDown="metroclick"
@@ -70,12 +72,14 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="Metronome" Name="metroicon"
-                                               Foreground="#2E2E2E"
-                                               Width="17"
-                                               Height="17"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
+
+                    <materialDesign:PackIcon Kind="Metronome"
+                                             Name="metroicon"
+                                             Foreground="#2E2E2E"
+                                             Width="17"
+                                             Height="17"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
                 </Border>
 
                 <Border Width="38" MouseLeftButtonDown="ChordClick"
@@ -84,13 +88,17 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="GuitarAcoustic" Name="chordicon"
-                                               Foreground="#2E2E2E"
-                                               Width="17"
-                                               Height="17"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
+
+                    <materialDesign:PackIcon Kind="GuitarAcoustic"
+                                             Name="chordicon"
+                                             Foreground="#2E2E2E"
+                                             Width="17"
+                                             Height="17"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
                 </Border>
+
+               
 
                 <Border Width="38" MouseLeftButtonDown="tunerclick"
                         Height="38"
@@ -98,17 +106,38 @@
                         Background="#111111"
                         Margin="0,4"
                         Cursor="Hand">
-                    <materialDesign:PackIcon Kind="Tune" Name="tunericon"
-                                               Foreground="#2E2E2E"
-                                               Width="17"
-                                               Height="17"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                </Border>
 
+                    <materialDesign:PackIcon Kind="Tune"
+                                             Name="tunericon"
+                                             Foreground="#2E2E2E"
+                                             Width="17"
+                                             Height="17"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                </Border>
+                <Border Width="38"
+        MouseLeftButtonDown="ChordTrainerClick"
+        Height="38"
+        CornerRadius="9"
+        Background="#111111"
+        Margin="0,4"
+        Cursor="Hand">
+
+                    <materialDesign:PackIcon Kind="ShuffleVariant"
+                             Name="chordTrainerIcon"
+                             Foreground="#2E2E2E"
+                             Width="17"
+                             Height="17"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+                </Border>
             </StackPanel>
         </Border>
 
-        <Frame Grid.Column="1" x:Name="MainFrame" Source="LoginPage.xaml" NavigationUIVisibility="Hidden" Navigated="MainFrame_Navigated"/>
+        <Frame Grid.Column="1"
+               x:Name="MainFrame"
+               Source="LoginPage.xaml"
+               NavigationUIVisibility="Hidden"
+               Navigated="MainFrame_Navigated"/>
     </Grid>
 </Window>

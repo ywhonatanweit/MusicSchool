@@ -17,7 +17,12 @@ namespace MusicSchoolWpf
         private readonly ItunesMusicService itunesService = new ItunesMusicService();
 
         private string adminName;
+
+        public string AdminName => adminName;
+
         private string? selectedSongPicBase64 = null;
+        private string? selectedSongPicPath = null;
+
         private song? editingSong = null;
 
         private SongList songs = new SongList();
@@ -34,7 +39,9 @@ namespace MusicSchoolWpf
         public AdminSongsPage(string name)
         {
             InitializeComponent();
+
             adminName = name;
+
             LoadAllData();
         }
 
@@ -98,9 +105,7 @@ namespace MusicSchoolWpf
                 lblApiStatus.Text = "נמצאו " + results.Count + " תוצאות";
 
                 if (results.Count == 0)
-                {
                     MessageBox.Show("לא נמצאו תוצאות");
-                }
             }
             catch (Exception ex)
             {
@@ -145,6 +150,7 @@ namespace MusicSchoolWpf
             TrySelectDefaultLanguage();
 
             selectedSongPicBase64 = null;
+            selectedSongPicPath = null;
             lblPicStatus.Text = "לא נבחרה תמונה";
 
             if (!string.IsNullOrWhiteSpace(track.BestArtworkUrl))
@@ -154,11 +160,13 @@ namespace MusicSchoolWpf
                 if (!string.IsNullOrWhiteSpace(imageBase64))
                 {
                     selectedSongPicBase64 = imageBase64;
+                    selectedSongPicPath = SaveBase64ImageToLocalFile(imageBase64, txtSongName.Text);
                     lblPicStatus.Text = "תמונה נטענה אוטומטית מ-iTunes";
                 }
                 else
                 {
                     selectedSongPicBase64 = null;
+                    selectedSongPicPath = null;
                     lblPicStatus.Text = "לא נטענה תמונה. אפשר להמשיך בלי תמונה או לבחור ידנית.";
                 }
             }
@@ -179,6 +187,7 @@ namespace MusicSchoolWpf
 
             txtSongName.Text = selected.Name ?? "";
             selectedSongPicBase64 = selected.SongPic;
+            selectedSongPicPath = selected.Songpath;
 
             SelectComboById(cmbArtist, selected.Artistid?.Id ?? 0);
             SelectComboById(cmbGenre, selected.Gaenreid?.Id ?? 0);
@@ -189,9 +198,11 @@ namespace MusicSchoolWpf
             else
                 songRating.Value = 3;
 
-            lblPicStatus.Text = string.IsNullOrWhiteSpace(selectedSongPicBase64)
-                ? "לשיר אין תמונה שמורה"
-                : "קיימת תמונה שמורה לשיר";
+            lblPicStatus.Text =
+                string.IsNullOrWhiteSpace(selectedSongPicBase64) &&
+                string.IsNullOrWhiteSpace(selectedSongPicPath)
+                    ? "לשיר אין תמונה שמורה"
+                    : "קיימת תמונה שמורה לשיר";
 
             LoadLyricsOfSong(selected);
 
@@ -211,7 +222,7 @@ namespace MusicSchoolWpf
 
                 txtLyricsAndChords.Text = string.Join(
                     Environment.NewLine,
-                    songLyrics.Select(x => "[" + (x.Chordid?.Name ?? "") + "] " + (x.Lyricsname ?? ""))
+                    songLyrics.Select(x => FormatLyricForEdit(x))
                 );
             }
             catch
@@ -229,7 +240,14 @@ namespace MusicSchoolWpf
             if (op.ShowDialog() == true)
             {
                 byte[] imageBytes = File.ReadAllBytes(op.FileName);
+
                 selectedSongPicBase64 = Convert.ToBase64String(imageBytes);
+                selectedSongPicPath = SaveImageBytesToLocalFile(
+                    imageBytes,
+                    txtSongName.Text,
+                    Path.GetExtension(op.FileName)
+                );
+
                 lblPicStatus.Text = "תמונה נטענה מהמחשב";
             }
         }
@@ -288,8 +306,8 @@ namespace MusicSchoolWpf
                 Gaenreid = selectedGenre,
                 Languageid = selectedLanguage,
                 Difficultyid = selectedDifficulty,
-                SongPic = selectedSongPicBase64 ?? "",
-                Songpath = ""
+                SongPic = string.IsNullOrWhiteSpace(selectedSongPicPath) ? (selectedSongPicBase64 ?? "") : "",
+                Songpath = selectedSongPicPath ?? ""
             };
 
             if (editingSong != null)
@@ -344,6 +362,7 @@ namespace MusicSchoolWpf
                     : "השיר עודכן בהצלחה");
 
                 ClearForm();
+
                 await LoadSongsOnlyAsync();
             }
             catch (Exception ex)
@@ -377,10 +396,11 @@ namespace MusicSchoolWpf
 
                 foreach (ParsedLyricLine parsed in parsedLines)
                 {
-                    if (string.IsNullOrWhiteSpace(parsed.ChordName))
-                        continue;
+                    string chordName = string.IsNullOrWhiteSpace(parsed.ChordName)
+                        ? "N.C."
+                        : parsed.ChordName;
 
-                    chord? matchingChord = await GetOrCreateChordByName(parsed.ChordName);
+                    chord? matchingChord = await GetOrCreateChordByName(chordName);
 
                     if (matchingChord == null)
                         continue;
@@ -463,6 +483,7 @@ namespace MusicSchoolWpf
         {
             editingSong = null;
             selectedSongPicBase64 = null;
+            selectedSongPicPath = null;
 
             txtSongName.Clear();
             txtLyricsAndChords.Clear();
@@ -473,6 +494,7 @@ namespace MusicSchoolWpf
             cmbLanguage.SelectedItem = null;
 
             songRating.Value = 3;
+
             lblPicStatus.Text = "לא נבחרה תמונה";
             lblApiStatus.Text = "";
 
@@ -552,6 +574,7 @@ namespace MusicSchoolWpf
                     return null;
 
                 artists = await api.SelectAllArtists();
+
                 RefreshArtistsCombo();
 
                 Artist? finalArtist = artists.FirstOrDefault(x => x.Id == existingPerson.Id);
@@ -563,6 +586,7 @@ namespace MusicSchoolWpf
                 try
                 {
                     artists = await api.SelectAllArtists();
+
                     RefreshArtistsCombo();
 
                     Artist? fallbackArtist = artists.FirstOrDefault(x =>
@@ -606,6 +630,7 @@ namespace MusicSchoolWpf
                     return null;
 
                 genres = await api.SelectAllGenres();
+
                 RefreshGenresCombo();
 
                 genre? finalGenre = genres
@@ -619,6 +644,7 @@ namespace MusicSchoolWpf
                 try
                 {
                     genres = await api.SelectAllGenres();
+
                     RefreshGenresCombo();
 
                     genre? fallbackGenre = genres.FirstOrDefault(x =>
@@ -733,6 +759,68 @@ namespace MusicSchoolWpf
                     return;
                 }
             }
+        }
+
+        private string? SaveBase64ImageToLocalFile(string imageBase64, string songName)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(imageBase64);
+                return SaveImageBytesToLocalFile(bytes, songName, ".jpg");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string? SaveImageBytesToLocalFile(byte[] bytes, string songName, string extension)
+        {
+            try
+            {
+                string cleanName = string.IsNullOrWhiteSpace(songName)
+                    ? "song"
+                    : Normalize(songName);
+
+                if (string.IsNullOrWhiteSpace(cleanName))
+                    cleanName = "song";
+
+                string safeExtension = string.IsNullOrWhiteSpace(extension)
+                    ? ".jpg"
+                    : extension;
+
+                string folder = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "IMAGES",
+                    "song_pics"
+                );
+
+                Directory.CreateDirectory(folder);
+
+                string fileName =
+                    cleanName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + safeExtension;
+
+                string fullPath = Path.Combine(folder, fileName);
+
+                File.WriteAllBytes(fullPath, bytes);
+
+                return Path.Combine("IMAGES", "song_pics", fileName);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string FormatLyricForEdit(lyrics line)
+        {
+            string chordName = line.Chordid?.Name ?? "";
+            string text = line.Lyricsname ?? "";
+
+            if (string.IsNullOrWhiteSpace(chordName) || chordName == "N.C.")
+                return text;
+
+            return "[" + chordName + "] " + text;
         }
 
         private string Normalize(string? text)
