@@ -24,6 +24,7 @@ namespace MusicSchoolWpf
         private string? selectedSongPicPath = null;
 
         private song? editingSong = null;
+        private string originalLyricsText = "";
 
         private SongList songs = new SongList();
         private ArtistList artists = new ArtistList();
@@ -220,14 +221,17 @@ namespace MusicSchoolWpf
                     .OrderBy(x => x.Placment)
                     .ToList();
 
-                txtLyricsAndChords.Text = string.Join(
-                    Environment.NewLine,
-                    songLyrics.Select(x => FormatLyricForEdit(x))
-                );
+                 txtLyricsAndChords.Text = string.Join(
+                 Environment.NewLine,
+                 songLyrics.Select(x => FormatLyricForEdit(x))
+                    );
+
+                originalLyricsText = txtLyricsAndChords.Text;
             }
             catch
             {
                 txtLyricsAndChords.Text = "";
+                originalLyricsText = "";
             }
         }
 
@@ -295,7 +299,6 @@ namespace MusicSchoolWpf
                 return;
             }
 
-            List<ParsedLyricLine> parsedLines = SongTextParser.Parse(txtLyricsAndChords.Text);
 
             difficulty selectedDifficulty = FindDifficulty((int)Math.Round(songRating.Value));
 
@@ -352,10 +355,18 @@ namespace MusicSchoolWpf
                     return;
                 }
 
-                bool lyricsSaved = await SaveLyricsForSong(savedSong, parsedLines);
+                bool lyricsChanged =
+                NormalizeLyrics(txtLyricsAndChords.Text) != NormalizeLyrics(originalLyricsText);
 
-                if (!lyricsSaved)
-                    return;
+                if (editingSong == null || lyricsChanged)
+                {
+                    List<ParsedLyricLine> parsedLines = SongTextParser.Parse(txtLyricsAndChords.Text);
+
+                    bool lyricsSaved = await SaveLyricsForSong(savedSong, parsedLines);
+
+                    if (!lyricsSaved)
+                        return;
+                }
 
                 MessageBox.Show(editingSong == null
                     ? "השיר נוסף בהצלחה"
@@ -484,6 +495,7 @@ namespace MusicSchoolWpf
             editingSong = null;
             selectedSongPicBase64 = null;
             selectedSongPicPath = null;
+            originalLyricsText = "";
 
             txtSongName.Clear();
             txtLyricsAndChords.Clear();
@@ -666,8 +678,6 @@ namespace MusicSchoolWpf
 
             try
             {
-                chords = await api.SelectAllChords();
-
                 chord? existingChord = chords.FirstOrDefault(x =>
                     Normalize(x.Name) == Normalize(chordName));
 
@@ -834,6 +844,13 @@ namespace MusicSchoolWpf
                 .Replace("׳", "")
                 .Replace("'", "")
                 .Replace("\"", "");
+        }
+        private string NormalizeLyrics(string? text)
+        {
+            return (text ?? "")
+                .Replace("\r\n", "\n")
+                .Replace("\r", "\n")
+                .Trim();
         }
     }
 }

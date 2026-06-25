@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Input;
 
 namespace MusicSchoolWpf
 {
@@ -73,10 +74,19 @@ namespace MusicSchoolWpf
         private void UpdateView(IEnumerable<chord> chords)
         {
             wpChords.Children.Clear();
-            //wpChords = new WrapPanel();
+
             foreach (var c in chords)
             {
-                wpChords.Children.Add(new ChordCardUC(c));
+                ChordCardUC card = new ChordCardUC(c);
+
+                card.Cursor = Cursors.Hand;
+
+                card.MouseLeftButtonDown += (sender, e) =>
+                {
+                    ChordSoundPlayer.PlayChordById(c.Id);
+                };
+
+                wpChords.Children.Add(card);
             }
         }
 

@@ -89,5 +89,25 @@ namespace MusicSchoolWpf
                 MessageBox.Show("בעיה בטעינת השיר:\n" + ex.Message);
             }
         }
+        private FlowDirection GetSongFlowDirection(song s)
+        {
+            string language = s.Languageid?.Languagename?.Trim().ToLower() ?? "";
+
+            if (language == "english" || language == "אנגלית")
+                return FlowDirection.LeftToRight;
+
+            return FlowDirection.RightToLeft;
+        }
+
+        private TextAlignment GetSongTextAlignment(song s)
+        {
+            string language = s.Languageid?.Languagename?.Trim().ToLower() ?? "";
+
+            if (language == "english" || language == "אנגלית" )
+                return TextAlignment.Left;
+
+            return TextAlignment.Right;
+        }
     }
 }
+    

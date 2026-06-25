@@ -77,9 +77,12 @@
 //        }
 //    }
 //}
+using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 
 namespace MusicSchoolWpf
@@ -141,39 +144,64 @@ namespace MusicSchoolWpf
         {
 
         }
+        private void SetFrequencyAndBeep(string textToShow, double beepFrequency)
+        {
+            frequency.Text = textToShow;
+
+            PlayTone(beepFrequency, 500, 0.45);
+        }
+
+        private void PlayTone(double freq, int durationMs, double volume)
+        {
+            Task.Run(() =>
+            {
+                using (WaveOutEvent output = new WaveOutEvent())
+                {
+                    SignalGenerator signal = new SignalGenerator()
+                    {
+                        Frequency = freq,
+                        Gain = volume,
+                        Type = SignalGeneratorType.Square
+                    };
+
+                    output.Init(signal);
+                    output.Play();
+
+                    Thread.Sleep(durationMs);
+
+                    output.Stop();
+                }
+            });
+        }
 
         private void he(object sender, RoutedEventArgs e)
         {
-            frequency.Text = "329.6";
+            SetFrequencyAndBeep("329.6", 330);
         }
 
         private void d(object sender, RoutedEventArgs e)
         {
-            frequency.Text = "146.8";
-
+            SetFrequencyAndBeep("146.8", 147);
         }
 
         private void g(object sender, RoutedEventArgs e)
         {
-            frequency.Text = "196.0";
-
+            SetFrequencyAndBeep("196.0", 196);
         }
 
         private void a(object sender, RoutedEventArgs e)
         {
-            frequency.Text = "110.0";
-
+            SetFrequencyAndBeep("110.0", 110);
         }
 
         private void b(object sender, RoutedEventArgs e)
         {
-            frequency.Text = "246.9";
+            SetFrequencyAndBeep("246.9", 247);
         }
 
         private void le(object sender, RoutedEventArgs e)
         {
-            frequency.Text = "82.4";
-
+            SetFrequencyAndBeep("82.4", 82);
         }
 
         private WaveInEvent waveIn;

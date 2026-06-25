@@ -91,7 +91,7 @@
         <!-- אזור מילים ואקורדים -->
         <Border Grid.Row="2" Background="#121212" CornerRadius="20" Margin="0,20,0,0" BorderBrush="#222" BorderThickness="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
-                <WrapPanel x:Name="songData" HorizontalAlignment="Right" FlowDirection="RightToLeft" />
+                <WrapPanel x:Name="songData" HorizontalAlignment="Stretch" />
             </ScrollViewer>
         </Border>
     </Grid>

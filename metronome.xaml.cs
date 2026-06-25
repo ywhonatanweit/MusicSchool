@@ -6,6 +6,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using MaterialDesignThemes.Wpf; // וודא שהספרייה מותקנת
+using System.Windows.Input;
 
 namespace MusicSchoolWpf
 {
@@ -160,6 +161,48 @@ namespace MusicSchoolWpf
             // הגישה הישירה והבטוחה ביותר
             ButtonIcon.Kind = playing ? PackIconKind.Stop : PackIconKind.Play;
             PlayPauseButton.ToolTip = playing ? "Stop" : "Play";
+        }
+        private void BpmTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // מאפשר הקלדה רק של מספרים
+            e.Handled = !int.TryParse(e.Text, out _);
+        }
+
+        private void BpmTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ApplyBpmFromTextBox();
+                Keyboard.ClearFocus();
+            }
+        }
+
+        private void BpmTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ApplyBpmFromTextBox();
+        }
+
+        private void ApplyBpmFromTextBox()
+        {
+            if (int.TryParse(BpmTextBox.Text, out int newBpm))
+            {
+                if (newBpm < 40)
+                    newBpm = 40;
+
+                if (newBpm > 240)
+                    newBpm = 240;
+
+                bpm = newBpm;
+                BpmSlider.Value = bpm;
+                UpdateBpmText();
+
+                if (isPlaying)
+                    UpdateTimerInterval();
+            }
+            else
+            {
+                UpdateBpmText();
+            }
         }
     }
 }

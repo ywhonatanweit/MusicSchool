@@ -24,6 +24,7 @@ namespace MusicSchoolWpf
         private int beatsPerChord = 4;
         private int currentBeat = 0;
         private bool isPlaying = false;
+        private bool chordSoundEnabled = true;
 
         public ChordTrainerPage()
         {
@@ -135,6 +136,11 @@ namespace MusicSchoolWpf
 
             txtChordName.Text = currentChord.Name;
             imgChord.Source = ImageExtensions.ToBitmapImage(currentChord.Chordpic, currentChord.Chordpath);
+
+            if (chordSoundEnabled)
+            {
+                ChordSoundPlayer.PlayChordById(currentChord.Id);
+            }
         }
 
         private void BtnNext_Click(object sender, RoutedEventArgs e)
@@ -193,6 +199,15 @@ namespace MusicSchoolWpf
                 {
                 }
             });
+        }
+        private void BtnSound_Click(object sender, RoutedEventArgs e)
+        {
+            chordSoundEnabled = !chordSoundEnabled;
+
+            btnSound.Content = chordSoundEnabled ? "Sound: ON" : "Sound: OFF";
+            btnSound.Background = chordSoundEnabled
+                ? new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(204, 34, 0))
+                : new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(51, 51, 51));
         }
     }
 }

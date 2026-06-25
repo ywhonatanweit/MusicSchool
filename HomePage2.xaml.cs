@@ -23,7 +23,7 @@ namespace MusicSchoolWpf
         
        private void practiceclick(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.Navigate(new Tuner());
+            NavigationService.Navigate(new ChordTrainerPage());
         }
         private void songsclick(object sender, MouseButtonEventArgs e)
         {

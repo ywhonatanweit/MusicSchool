@@ -95,25 +95,37 @@ namespace NoaMedia
             string fileName = Path.GetFileName(normalized);
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            string[] candidates =
+            DirectoryInfo? dir = new DirectoryInfo(baseDir);
+
+            for (int i = 0; i < 10 && dir != null; i++)
             {
-                Path.Combine(baseDir, normalized),
-                Path.Combine(baseDir, "IMAGES", normalized),
-                Path.Combine(baseDir, "IMAGES", "song_pics", fileName),
-                Path.Combine(baseDir, "IMAGES", "chords", fileName),
+                string[] candidates =
+                {
+            Path.Combine(dir.FullName, normalized),
 
-                Path.Combine(baseDir, "..", "..", "..", normalized),
-                Path.Combine(baseDir, "..", "..", "..", "IMAGES", normalized),
-                Path.Combine(baseDir, "..", "..", "..", "IMAGES", "song_pics", fileName),
-                Path.Combine(baseDir, "..", "..", "..", "IMAGES", "chords", fileName),
+            Path.Combine(dir.FullName, "pictures", fileName),
 
-                Path.Combine(baseDir, "..", "..", "..", "..", "MusicSchool-project-master", "ViewModel", "pictures", fileName),
-                Path.Combine(baseDir, "..", "..", "..", "..", "MusicSchool-project", "ViewModel", "pictures", fileName)
-            };
+            Path.Combine(dir.FullName, "IMAGES", normalized),
+            Path.Combine(dir.FullName, "IMAGES", "chords", fileName),
+            Path.Combine(dir.FullName, "IMAGES", "song_pics", fileName),
 
-            return candidates
-                .Select(Path.GetFullPath)
-                .FirstOrDefault(File.Exists);
+            Path.Combine(dir.FullName, "ViewModel", "pictures", fileName),
+            Path.Combine(dir.FullName, "MusicSchool-project", "ViewModel", "pictures", fileName),
+            Path.Combine(dir.FullName, "MusicSchool-project-master", "ViewModel", "pictures", fileName)
+        };
+
+                foreach (string candidate in candidates)
+                {
+                    string fullPath = Path.GetFullPath(candidate);
+
+                    if (File.Exists(fullPath))
+                        return fullPath;
+                }
+
+                dir = dir.Parent;
+            }
+
+            return null;
         }
 
         private static BitmapImage? TryLoadFile(string fullPath)

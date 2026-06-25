@@ -9,7 +9,7 @@
       d:DesignHeight="600" d:DesignWidth="800"
       Title="songpage" Background="Black">
 
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="60"/>
@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <!-- כותרת וחיפוש -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Stretch" Margin="20,0">
+        <StackPanel x:Name="SearchHeader" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Stretch" Margin="20,0">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="SEARCH" FontSize="40" Foreground="DarkRed" FontWeight="Bold"/>
                 <TextBox x:Name="txtSearch" Width="250" Height="35" FontSize="18" 
@@ -28,8 +28,8 @@
             <TextBlock Text="songs" FontSize="80" Foreground="DarkRed" Margin="250,0,0,0" HorizontalAlignment="Right"/>
         </StackPanel>
 
-        <!-- שורת כלים: מיון וכפתור סינון -->
-        <Grid Grid.Row="1" Margin="20,0">
+        <!--  מיון וכפתור סינון -->
+        <Grid x:Name="SortFilterRow" Grid.Row="1" Margin="20,0">
             <ComboBox x:Name="cmbSort" Grid.Row="1" HorizontalAlignment="Left" SelectedIndex="0" FontSize="18" 
           Width="180" Height="40" Background="Black" Foreground="DarkRed" BorderBrush="DarkRed" 
           SelectionChanged="cmbSort_SelectionChanged">

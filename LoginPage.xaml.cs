@@ -59,6 +59,7 @@ namespace MusicSchoolWpf
 
                 if (user != null)
                 {
+                    MessageBox.Show(" ברוך הבא! " + loginusername.Text);
                     NavigationService.Navigate(new HomePage2(user.Name));
                 }
                 else
@@ -123,7 +124,7 @@ namespace MusicSchoolWpf
                     return;
                 }
 
-                MessageBox.Show("המשתמש נוצר בהצלחה");
+                MessageBox.Show(" המשתמש נוצר בהצלחה, ברוך הבא " + signupusername.Text);
                 NavigationService.Navigate(new HomePage2(name));
             }
             catch (Exception ex)
@@ -167,7 +168,7 @@ namespace MusicSchoolWpf
 
                 if (adminUser != null)
                 {
-                    MessageBox.Show("ברוך הבא, מנהל מערכת!");
+                    MessageBox.Show( " ברוך הבא, מנהל מערכת! " + adminusername.Text);
                     NavigationService.Navigate(new AdminDashboardPage(personUser.Name));
                 }
                 else

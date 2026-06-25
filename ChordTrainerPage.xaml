@@ -142,26 +142,35 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Bottom">
+            Orientation="Horizontal"
+            VerticalAlignment="Bottom">
+
+                    <Button x:Name="btnSound"
+            Content="Sound: ON"
+            Width="100"
+            Height="40"
+            Background="#333"
+            Foreground="White"
+            Margin="0,0,8,0"
+            Click="BtnSound_Click"/>
 
                     <Button x:Name="btnNext"
-                            Content="אקורד הבא"
-                            Width="110"
-                            Height="40"
-                            Background="#333"
-                            Foreground="White"
-                            Margin="0,0,8,0"
-                            Click="BtnNext_Click"/>
+            Content="אקורד הבא"
+            Width="110"
+            Height="40"
+            Background="#333"
+            Foreground="White"
+            Margin="0,0,8,0"
+            Click="BtnNext_Click"/>
 
                     <Button x:Name="btnStartStop"
-                            Content="Start"
-                            Width="110"
-                            Height="40"
-                            Background="#CC2200"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            Click="BtnStartStop_Click"/>
+            Content="Start"
+            Width="110"
+            Height="40"
+            Background="#CC2200"
+            Foreground="White"
+            FontWeight="Bold"
+            Click="BtnStartStop_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
