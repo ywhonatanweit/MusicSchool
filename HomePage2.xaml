@@ -115,6 +115,7 @@
 
                         <Button Content="התחל שיעור"
                                 MouseLeftButtonDown="songsclick"
+                                Click="songclick2"
                                 Background="#CC2200"
                                 Foreground="White"
                                 FontSize="11"

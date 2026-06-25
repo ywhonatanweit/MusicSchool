@@ -59,5 +59,10 @@ namespace MusicSchoolWpf
                 mainWindow.LogoutToLogin();
             }
         }
+
+        private void songclick2(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new songpage());
+        }
     }
 }
