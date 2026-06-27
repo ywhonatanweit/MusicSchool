@@ -1,89 +1,10 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Navigation;
-//using System.Windows.Shapes;
-
-//namespace MusicSchoolWpf
-//{
-//    /// <summary>
-//    /// Interaction logic for Tuner.xaml
-//    /// </summary>
-//    public partial class Tuner : Page
-//    {
-//        public Tuner()
-//        {
-//            InitializeComponent();
-//        }
-//        //private bool isElectric = true;
-
-//        //private void SwitchHead_Click(object sender, RoutedEventArgs e)
-//        //{
-//        //    if (isElectric)
-//        //    {
-//        //        ElectricHead.Visibility = Visibility.Collapsed;
-//        //        AcousticHead.Visibility = Visibility.Visible;
-//        //    }
-//        //    else
-//        //    {
-//        //        ElectricHead.Visibility = Visibility.Visible;
-//        //        AcousticHead.Visibility = Visibility.Collapsed;
-//        //    }
-
-//        //    isElectric = !isElectric;
-//        //}
-//        private bool isElectric = true;
-
-
-
-//        // החלפת חשמלית / אקוסטית
-//        private void SwitchHead_Click(object sender, RoutedEventArgs e)
-//        {
-//            if (isElectric)
-//            {
-//                ElectricHead.Visibility = Visibility.Collapsed;
-//                AcousticHead.Visibility = Visibility.Visible;
-//            }
-//            else
-//            {
-//                ElectricHead.Visibility = Visibility.Visible;
-//                AcousticHead.Visibility = Visibility.Collapsed;
-//            }
-
-//            isElectric = !isElectric;
-//        }
-
-//        // מעבר לימני
-//        private void HandSwitch_Unchecked(object sender, RoutedEventArgs e)
-//        {
-//            HeadTransform.ScaleX = 1;
-//            HandSwitch.Content = "Right Handed";
-//        }
-
-//        // מעבר לשמאלי
-//        private void HandSwitch_Checked(object sender, RoutedEventArgs e)
-//        {
-//            HeadTransform.ScaleX = -1;
-//            HandSwitch.Content = "Left Handed";
-//        }
-//    }
-//}
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-
 
 namespace MusicSchoolWpf
 {
@@ -92,10 +13,50 @@ namespace MusicSchoolWpf
         private bool isElectric = true;
         private bool isLeftHanded = false;
 
+        private WaveInEvent waveIn;
+        private bool isListening = false;
+
+        private float targetFrequency = 82.4f;
+        private string targetStringName = "Low E";
+
+        private float tolerance = 5f;
+
+        private class GuitarStringTarget
+        {
+            public string Name { get; set; }
+            public float Frequency { get; set; }
+
+            public GuitarStringTarget(string name, float frequency)
+            {
+                Name = name;
+                Frequency = frequency;
+            }
+        }
+
+        private readonly GuitarStringTarget[] guitarStrings =
+        {
+            new GuitarStringTarget("Low E", 82.4f),
+            new GuitarStringTarget("A", 110.0f),
+            new GuitarStringTarget("D", 146.8f),
+            new GuitarStringTarget("G", 196.0f),
+            new GuitarStringTarget("B", 246.9f),
+            new GuitarStringTarget("High E", 329.6f)
+        };
+
         public Tuner()
         {
             InitializeComponent();
+
             UpdateView();
+
+            StartListening();
+
+            this.Unloaded += Tuner_Unloaded;
+        }
+
+        private void Tuner_Unloaded(object sender, RoutedEventArgs e)
+        {
+            StopListening();
         }
 
         private void SwitchHead_Click(object sender, RoutedEventArgs e)
@@ -120,117 +81,191 @@ namespace MusicSchoolWpf
 
         private void UpdateView()
         {
-            // להסתיר הכל
             ElectricRight.Visibility = Visibility.Collapsed;
             ElectricLeft.Visibility = Visibility.Collapsed;
             AcousticRight.Visibility = Visibility.Collapsed;
             AcousticLeft.Visibility = Visibility.Collapsed;
 
-            // להציג רק את המתאים
             if (isElectric && !isLeftHanded)
                 ElectricRight.Visibility = Visibility.Visible;
-
             else if (isElectric && isLeftHanded)
                 ElectricLeft.Visibility = Visibility.Visible;
-
             else if (!isElectric && !isLeftHanded)
                 AcousticRight.Visibility = Visibility.Visible;
-
             else
                 AcousticLeft.Visibility = Visibility.Visible;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
         }
-        private void SetFrequencyAndBeep(string textToShow, double beepFrequency)
-        {
-            frequency.Text = textToShow;
 
-            PlayTone(beepFrequency, 500, 0.45);
+        private void SetTargetAndPlay(string noteName, string textToShow, double beepFrequency)
+        {
+            targetStringName = noteName;
+            targetFrequency = (float)beepFrequency;
+
+            frequency.Text = noteName + " | Target: " + textToShow + " Hz";
+
+            PlayTone(beepFrequency, 450, 0.65);
         }
 
         private void PlayTone(double freq, int durationMs, double volume)
         {
             Task.Run(() =>
             {
-                using (WaveOutEvent output = new WaveOutEvent())
+                try
                 {
-                    SignalGenerator signal = new SignalGenerator()
+                    using (WaveOutEvent output = new WaveOutEvent())
                     {
-                        Frequency = freq,
-                        Gain = volume,
-                        Type = SignalGeneratorType.Square
-                    };
+                        SignalGenerator signal = new SignalGenerator()
+                        {
+                            Frequency = freq,
+                            Gain = volume,
+                            Type = SignalGeneratorType.SawTooth
+                        };
 
-                    output.Init(signal);
-                    output.Play();
+                        output.Init(signal);
+                        output.Play();
 
-                    Thread.Sleep(durationMs);
+                        Thread.Sleep(durationMs);
 
-                    output.Stop();
+                        output.Stop();
+                    }
+                }
+                catch
+                {
                 }
             });
         }
 
         private void he(object sender, RoutedEventArgs e)
         {
-            SetFrequencyAndBeep("329.6", 330);
-        }
-
-        private void d(object sender, RoutedEventArgs e)
-        {
-            SetFrequencyAndBeep("146.8", 147);
-        }
-
-        private void g(object sender, RoutedEventArgs e)
-        {
-            SetFrequencyAndBeep("196.0", 196);
-        }
-
-        private void a(object sender, RoutedEventArgs e)
-        {
-            SetFrequencyAndBeep("110.0", 110);
+            SetTargetAndPlay("High E", "329.6", 329.6);
         }
 
         private void b(object sender, RoutedEventArgs e)
         {
-            SetFrequencyAndBeep("246.9", 247);
+            SetTargetAndPlay("B", "246.9", 246.9);
+        }
+
+        private void g(object sender, RoutedEventArgs e)
+        {
+            SetTargetAndPlay("G", "196.0", 196.0);
+        }
+
+        private void d(object sender, RoutedEventArgs e)
+        {
+            SetTargetAndPlay("D", "146.8", 146.8);
+        }
+
+        private void a(object sender, RoutedEventArgs e)
+        {
+            SetTargetAndPlay("A", "110.0", 110.0);
         }
 
         private void le(object sender, RoutedEventArgs e)
         {
-            SetFrequencyAndBeep("82.4", 82);
+            SetTargetAndPlay("Low E", "82.4", 82.4);
         }
-
-        private WaveInEvent waveIn;
-        private float[] buffer = new float[2048];
-
-        private float targetFrequency = 82.4f; // אפשר לשנות בעתיד
-        private float tolerance = 5f; // טווח ירוק (Hz)
-
-        
 
         private void StartListening()
         {
-            waveIn = new WaveInEvent();
-            waveIn.WaveFormat = new WaveFormat(44100, 1);
-            waveIn.DataAvailable += OnDataAvailable;
-            waveIn.StartRecording();
-            //frequency.Text = float.Parse(DetectFrequency);
+            try
+            {
+                if (isListening)
+                    return;
+
+                waveIn = new WaveInEvent();
+
+                // 0 = התקן הקלט הראשי שמוגדר ב-Windows
+                waveIn.DeviceNumber = 0;
+
+                waveIn.WaveFormat = new WaveFormat(44100, 16, 1);
+                waveIn.BufferMilliseconds = 80;
+                waveIn.DataAvailable += OnDataAvailable;
+
+                waveIn.StartRecording();
+
+                isListening = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("לא הצלחתי להתחיל להאזין לקלט:\n" + ex.Message);
+            }
+        }
+
+        private void StopListening()
+        {
+            try
+            {
+                if (waveIn != null)
+                {
+                    waveIn.DataAvailable -= OnDataAvailable;
+                    waveIn.StopRecording();
+                    waveIn.Dispose();
+                    waveIn = null;
+                }
+
+                isListening = false;
+            }
+            catch
+            {
+            }
         }
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
-            for (int i = 0; i < buffer.Length; i++)
+            try
             {
-                buffer[i] = BitConverter.ToInt16(e.Buffer, i * 2) / 32768f;
+                int sampleCount = e.BytesRecorded / 2;
+
+                if (sampleCount <= 0)
+                    return;
+
+                float[] samples = new float[sampleCount];
+
+                for (int i = 0; i < sampleCount; i++)
+                {
+                    short sample = BitConverter.ToInt16(e.Buffer, i * 2);
+                    samples[i] = sample / 32768f;
+                }
+
+                float inputLevel = GetInputLevel(samples);
+
+                // רק אם באמת יש סאונד מהגיטרה/קלט
+                if (inputLevel < 0.015f)
+                    return;
+
+                float detectedFreq = DetectFrequency(samples, 44100);
+
+                // טווח רחב כדי לא לפספס מיתרים גבוהים או קפיצות
+                if (detectedFreq < 40 || detectedFreq > 1000)
+                    return;
+
+                Dispatcher.Invoke(() =>
+                {
+                    UpdateUI(detectedFreq);
+                });
+            }
+            catch
+            {
+            }
+        }
+
+        private float GetInputLevel(float[] samples)
+        {
+            float max = 0;
+
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float abs = Math.Abs(samples[i]);
+
+                if (abs > max)
+                    max = abs;
             }
 
-            float freq = DetectFrequency(buffer, 44100);
-
-            Dispatcher.Invoke(() => UpdateUI(freq));
+            return max;
         }
 
         private float DetectFrequency(float[] samples, int sampleRate)
@@ -239,31 +274,74 @@ namespace MusicSchoolWpf
 
             for (int i = 1; i < samples.Length; i++)
             {
-                if (samples[i - 1] < 0 && samples[i] >= 0)
+                if ((samples[i - 1] < 0 && samples[i] >= 0) ||
+                    (samples[i - 1] > 0 && samples[i] <= 0))
+                {
                     crossings++;
+                }
             }
 
-            return crossings * sampleRate / (2f * samples.Length);
+            double seconds = (double)samples.Length / sampleRate;
+
+            if (seconds <= 0)
+                return 0;
+
+            double frequency = crossings / 2.0 / seconds;
+
+            return (float)frequency;
         }
 
-        private void UpdateUI(float frequency)
+        private GuitarStringTarget FindClosestString(float detectedFrequency)
         {
-            // כמה רחוק מהתדר הרצוי
-            double diff = frequency - targetFrequency;
+            GuitarStringTarget closest = guitarStrings[0];
+            float smallestDiff = Math.Abs(detectedFrequency - closest.Frequency);
 
-            // הגבלת טווח תצוגה
-            double maxRange = 20; // Hz
-            diff = Math.Max(-maxRange, Math.Min(maxRange, diff));
+            foreach (GuitarStringTarget guitarString in guitarStrings)
+            {
+                float diff = Math.Abs(detectedFrequency - guitarString.Frequency);
 
-            // המרה למיקום (פיקסלים)
+                if (diff < smallestDiff)
+                {
+                    smallestDiff = diff;
+                    closest = guitarString;
+                }
+            }
+
+            return closest;
+        }
+
+        private void UpdateUI(float detectedFrequency)
+        {
+            GuitarStringTarget closestString = FindClosestString(detectedFrequency);
+
+            targetStringName = closestString.Name;
+            targetFrequency = closestString.Frequency;
+
+            double realDiff = detectedFrequency - targetFrequency;
+
+            frequency.Text =
+                "Detected: " + detectedFrequency.ToString("0.0") +
+                " Hz | String: " + targetStringName +
+                " | Target: " + targetFrequency.ToString("0.0") + " Hz";
+
+            double maxRange = 20;
+            double displayDiff = Math.Max(-maxRange, Math.Min(maxRange, realDiff));
+
             double pixelsPerHz = 5;
-            double offset = diff * pixelsPerHz;
+            double offset = displayDiff * pixelsPerHz;
 
-            // הזזת הקו הלבן
             FrequencyLine.Margin = new Thickness(offset, 0, 0, 0);
 
-            // עדכון רוחב האזור הירוק לפי tolerance
             GoodRange.Width = tolerance * pixelsPerHz * 2;
+
+            if (Math.Abs(realDiff) <= tolerance)
+            {
+                GoodRange.Background = System.Windows.Media.Brushes.LimeGreen;
+            }
+            else
+            {
+                GoodRange.Background = System.Windows.Media.Brushes.DarkGreen;
+            }
         }
     }
 }

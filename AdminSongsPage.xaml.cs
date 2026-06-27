@@ -407,11 +407,29 @@ namespace MusicSchoolWpf
 
                 foreach (ParsedLyricLine parsed in parsedLines)
                 {
-                    string chordName = string.IsNullOrWhiteSpace(parsed.ChordName)
-                        ? "N.C."
-                        : parsed.ChordName;
+                    string chordName = parsed.ChordName ?? "";
+                    string lyricText = parsed.Text ?? "";
 
-                    chord? matchingChord = await GetOrCreateChordByName(chordName);
+                    chord matchingChord = null;
+
+                    // אם אין אקורד בשורה — משתמשים ב-N.C.
+                    if (string.IsNullOrWhiteSpace(chordName))
+                    {
+                        matchingChord = await GetNoChordChord();
+                    }
+                    else
+                    {
+                        // מחפש רק אקורד שכבר קיים במאגר
+                        matchingChord = FindExistingChordByName(chordName);
+
+                        // אם האקורד לא קיים — לא יוצרים אותו
+                        // מוסיפים אותו כמלל רגיל בתוך השורה
+                        if (matchingChord == null)
+                        {
+                            lyricText = "[" + chordName + "] " + lyricText;
+                            matchingChord = await GetNoChordChord();
+                        }
+                    }
 
                     if (matchingChord == null)
                         continue;
@@ -421,7 +439,7 @@ namespace MusicSchoolWpf
                         Songid = savedSong,
                         Chordid = matchingChord,
                         Placment = placement++,
-                        Lyricsname = parsed.Text ?? ""
+                        Lyricsname = lyricText
                     };
 
                     await api.InsertALyrics(newLine);
@@ -710,6 +728,58 @@ namespace MusicSchoolWpf
             {
                 return null;
             }
+        }
+        private chord FindExistingChordByName(string chordName)
+        {
+            if (string.IsNullOrWhiteSpace(chordName))
+                return null;
+
+            return chords.FirstOrDefault(x =>
+                NormalizeChordName(x.Name) == NormalizeChordName(chordName));
+        }
+
+        private string NormalizeChordName(string text)
+        {
+            return (text ?? "")
+                .Trim()
+                .ToUpper()
+                .Replace(" ", "");
+        }
+
+        private bool IsNoChordName(string chordName)
+        {
+            string normalized = NormalizeChordName(chordName)
+                .Replace(".", "")
+                .Replace("/", "");
+
+            return normalized == "NC";
+        }
+
+        private async Task<chord> GetNoChordChord()
+        {
+            chord existingNoChord = chords.FirstOrDefault(x => IsNoChordName(x.Name));
+
+            if (existingNoChord != null)
+                return existingNoChord;
+
+            difficulty easyDifficulty = FindDifficulty(1);
+
+            chord noChord = new chord
+            {
+                Name = "N.C.",
+                Difficulty = easyDifficulty,
+                Chordpic = "",
+                Chordpath = ""
+            };
+
+            int insertResult = await api.InsertAChord(noChord);
+
+            if (insertResult <= 0)
+                return null;
+
+            chords = await api.SelectAllChords();
+
+            return chords.FirstOrDefault(x => IsNoChordName(x.Name));
         }
 
         private void RefreshArtistsCombo()
