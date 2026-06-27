@@ -131,9 +131,26 @@
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"/>
                 </Border>
+                <Border Width="38" MouseLeftButtonDown="BackClick" VerticalAlignment="Bottom" Margin="0,620,0,0"
+  Height="38"
+  CornerRadius="9"
+  Background="#140A0A"
+  BorderBrush="#55CC2200"
+  BorderThickness="0.5"
+  Cursor="Hand">
+
+                    <materialDesign:PackIcon Kind="ExitRun"
+                       Foreground="#CC2200"
+                       Width="17"
+                       Height="17"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       x:Name="BackIcon"/>
+                </Border>
+
             </StackPanel>
         </Border>
-
+       
         <Frame Grid.Column="1"
                x:Name="MainFrame"
                Source="LoginPage.xaml"

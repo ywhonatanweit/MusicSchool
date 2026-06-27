@@ -412,32 +412,22 @@ namespace MusicSchoolWpf
 
                     chord matchingChord = null;
 
-                    // אם אין אקורד בשורה — משתמשים ב-N.C.
-                    if (string.IsNullOrWhiteSpace(chordName))
+                    if (!string.IsNullOrWhiteSpace(chordName))
                     {
-                        matchingChord = await GetNoChordChord();
-                    }
-                    else
-                    {
-                        // מחפש רק אקורד שכבר קיים במאגר
                         matchingChord = FindExistingChordByName(chordName);
 
-                        // אם האקורד לא קיים — לא יוצרים אותו
-                        // מוסיפים אותו כמלל רגיל בתוך השורה
+                        // אם האקורד לא קיים במאגר:
+                        // לא יוצרים אותו, אלא מכניסים אותו כטקסט רגיל
                         if (matchingChord == null)
                         {
                             lyricText = "[" + chordName + "] " + lyricText;
-                            matchingChord = await GetNoChordChord();
                         }
                     }
-
-                    if (matchingChord == null)
-                        continue;
 
                     lyrics newLine = new lyrics
                     {
                         Songid = savedSong,
-                        Chordid = matchingChord,
+                        Chordid = matchingChord,   // יכול להיות null
                         Placment = placement++,
                         Lyricsname = lyricText
                     };
@@ -473,16 +463,16 @@ namespace MusicSchoolWpf
 
             try
             {
-                LyricsList allLyrics = await api.SelectAllLyrics();
+                //LyricsList allLyrics = await api.SelectAllLyrics();
 
-                List<lyrics> lyricsToDelete = allLyrics
-                    .Where(x => x.Songid != null && x.Songid.Id == editingSong.Id)
-                    .ToList();
+                //List<lyrics> lyricsToDelete = allLyrics
+                //    .Where(x => x.Songid != null && x.Songid.Id == editingSong.Id)
+                //    .ToList();
 
-                foreach (lyrics line in lyricsToDelete)
-                {
-                    await api.DeleteALyrics(line);
-                }
+                //foreach (lyrics line in lyricsToDelete)
+                //{
+                //    await api.DeleteALyrics(line);
+                //}
 
                 int result = await api.DeleteASong(editingSong);
 

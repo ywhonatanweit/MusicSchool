@@ -135,5 +135,18 @@ namespace MusicSchoolWpf
                         : inactiveBrush;
             }
         }
+
+        private void BackClick(object sender, MouseButtonEventArgs e)
+        {
+            if (isAdminMode)
+            {
+                MainFrame.Navigate(new AdminDashboardPage(currentUserName));
+            }
+            else
+            {
+                MainFrame.Navigate(new HomePage2(currentUserName));
+
+            }
+        }
     }
 }

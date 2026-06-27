@@ -82,7 +82,8 @@ namespace MusicSchoolWpf
             UpdatePlayIcon(true);
             UpdateTimerInterval();
             metronomeTimer.Start();
-            Tick(); // הפעלה מיידית של הפעימה הראשונה
+            if (this.NavigationService?.Content.GetType() == typeof(metronome))
+                Tick(); // הפעלה מיידית של הפעימה הראשונה
         }
 
         private void StopMetronome()
@@ -95,13 +96,18 @@ namespace MusicSchoolWpf
 
         private void MetronomeTimer_Tick(object sender, EventArgs e)
         {
-            Tick();
+            if (this.NavigationService?.Content.GetType() == typeof(metronome))
+                Tick();
         }
 
         private void Tick()
         {
             // השמעת צליל (בנפרד כדי לא לתקוע את ה-UI)
-            Task.Run(() => Console.Beep(pendulumDirection ? 1000 : 800, 50));
+            Task.Run(() => {
+                
+                    Console.Beep(pendulumDirection ? 1000 : 800, 50);
+            
+            });
 
             double targetAngle = pendulumDirection ? SwingAngle : -SwingAngle;
             AnimatePendulum(targetAngle);

@@ -4,6 +4,7 @@ using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -105,7 +106,8 @@ namespace MusicSchoolWpf
 
         private void Tick()
         {
-            PlayClick();
+            if (this.NavigationService?.Content.GetType() == typeof(ChordTrainerPage))
+                PlayClick();
 
             currentBeat++;
 
@@ -137,7 +139,7 @@ namespace MusicSchoolWpf
             txtChordName.Text = currentChord.Name;
             imgChord.Source = ImageExtensions.ToBitmapImage(currentChord.Chordpic, currentChord.Chordpath);
 
-            if (chordSoundEnabled)
+            if (chordSoundEnabled&& (this.NavigationService?.Content.GetType() == typeof(ChordTrainerPage)))
             {
                 ChordSoundPlayer.PlayChordById(currentChord.Id);
             }
@@ -193,7 +195,9 @@ namespace MusicSchoolWpf
             {
                 try
                 {
-                    Console.Beep(frequency, 45);
+                    
+                Console.Beep(frequency, 45);
+                 
                 }
                 catch
                 {
